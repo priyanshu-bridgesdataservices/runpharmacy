@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Receiving Quotes - RunPharmacy</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#D92E7F',
+                        secondary: '#6B7FDB',
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-gray-50 dark:bg-gray-900 min-h-screen transition-colors duration-200 pb-6">
+    
+    <!-- Theme Toggle (Top Right) -->
+    <div class="fixed top-4 right-4 z-50">
+        <button onclick="toggleTheme()" class="p-2 rounded-full bg-white dark:bg-gray-800 shadow-lg">
+            <svg class="w-5 h-5 text-gray-800 dark:text-yellow-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path class="dark:hidden" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/>
+                <path class="hidden dark:block" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"/>
+            </svg>
+        </button>
+    </div>
+
+    <!-- Header -->
+    <div class="bg-white dark:bg-gray-800 shadow-sm border-b border-gray-200 dark:border-gray-700 px-4 py-4 sticky top-0 z-40">
+        <div class="flex items-center gap-3">
+            <div class="flex-1">
+                <h1 class="text-lg font-bold text-gray-900 dark:text-white">Order #P12A34</h1>
+                <p class="text-xs text-gray-500 dark:text-gray-400">Receiving quotes from pharmacies</p>
+            </div>
+            <div class="flex items-center gap-2 bg-green-100 dark:bg-green-900/30 px-3 py-1.5 rounded-full">
+                <div class="w-2 h-2 rounded-full bg-green-500 animate-pulse"></div>
+                <span class="text-xs font-bold text-green-700 dark:text-green-400" id="quoteCount">0 Quotes</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Loading State (Initial) -->
+    <div id="loadingState" class="px-4 py-8">
+        <div class="bg-gradient-to-br from-primary/10 to-secondary/10 dark:from-primary/20 dark:to-secondary/20 rounded-3xl p-8 text-center">
+            <!-- Animated Icon -->
+            <div class="w-24 h-24 mx-auto mb-6 relative">
+                <div class="absolute inset-0 bg-gradient-to-br from-primary to-secondary rounded-full animate-ping opacity-20"></div>
+                <div class="absolute inset-0 bg-gradient-to-br from-primary to-secondary rounded-full flex items-center justify-center">
+                    <svg class="w-12 h-12 text-white animate-pulse" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
+                    </svg>
+                </div>
+            </div>
+            
+            <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-2">Sending Your Request</h2>
+            <p class="text-gray-600 dark:text-gray-400 mb-6">Broadcasting to <span class="font-bold text-primary">12 pharmacies</span> near you...</p>
+            
+            <!-- Progress Bar -->
+            <div class="w-full h-2 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden mb-4">
+                <div class="h-full bg-gradient-to-r from-primary to-secondary rounded-full animate-pulse" style="width: 60%"></div>
+            </div>
+            
+            <p class="text-sm text-gray-500 dark:text-gray-400">⏱️ Quotes will start arriving in seconds</p>
+        </div>
+    </div>
+
+    <!-- Sort/Filter Section -->
+    <div id="sortSection" class="hidden px-4 pt-6 pb-3">
+        <div class="flex items-center gap-2 overflow-x-auto pb-2 hide-scrollbar">
+            <button onclick="sortByPrice()" id="sortPrice" class="px-4 py-2 bg-primary text-white text-sm font-bold rounded-full whitespace-nowrap shadow-md flex items-center gap-2">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16V4m0 0L3 8m4-4l4 4m6 0v12m0 0l4-4m-4 4l-4-4"/>
+                </svg>
+                Price (Low to High)
+            </button>
+            <button onclick="sortByDistance()" id="sortDistance" class="px-4 py-2 bg-white dark:bg-gray-800 border-2 border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-300 text-sm font-bold rounded-full whitespace-nowrap flex items-center gap-2">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
+                </svg>
+                Distance (Nearest)
+            </button>
+        </div>
+    </div>
+
+    <!-- Quotes List -->
+    <div id="quotesList" class="hidden px-4 pb-6 space-y-4">
+        
+        <!-- Quote Card 1 - Lowest Price -->
+        <div class="bg-white dark:bg-gray-800 border-2 border-green-500 dark:border-green-600 rounded-2xl p-5 shadow-lg relative quote-card" data-price="910" data-distance="1.4">
+            <div class="absolute -top-3 left-4 bg-green-500 text-white text-xs font-bold px-3 py-1 rounded-full shadow-md">
+                BEST PRICE 🏆
+            </div>
+            
+            <div class="flex items-start justify-between mb-4 mt-2">
+                <div class="flex-1">
+                    <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-1">Frank Ross Pharmacy</h3>
+                    <div class="flex items-center gap-2 mb-2">
+                        <div class="flex items-center gap-1">
+                            <span class="text-yellow-500">⭐</span>
+                            <span class="text-sm font-bold text-gray-900 dark:text-white">4.7</span>
+                            <span class="text-xs text-gray-500 dark:text-gray-400">(120)</span>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-1 text-sm text-gray-600 dark:text-gray-400">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
+                        </svg>
+                        <span class="font-medium">1.4 km • Ballygunge</span>
+                    </div>
+                </div>
+                <div class="text-right">
+                    <p class="text-3xl font-bold text-green-600 dark:text-green-500">₹910</p>
+                    <p class="text-xs text-gray-500 dark:text-gray-400">Total</p>
+                </div>
+            </div>
+            
+            <button onclick="selectQuote('Frank Ross Pharmacy', 910)" class="w-full py-3 bg-green-500 hover:bg-green-600 text-white font-bold rounded-xl transition-all flex items-center justify-center gap-2 shadow-md">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                </svg>
+                SELECT
+            </button>
+        </div>
+
+        <!-- Quote Card 2 -->
+        <div class="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-2xl p-5 shadow-md quote-card" data-price="945" data-distance="0.8">
+            <div class="flex items-start justify-between mb-4">
+                <div class="flex-1">
+                    <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-1">Apollo Pharmacy</h3>
+                    <div class="flex items-center gap-2 mb-2">
+                        <div class="flex items-center gap-1">
+                            <span class="text-yellow-500">⭐</span>
+                            <span class="text-sm font-bold text-gray-900 dark:text-white">4.8</span>
+                            <span class="text-xs text-gray-500 dark:text-gray-400">(200)</span>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-1 text-sm text-gray-600 dark:text-gray-400">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
+                        </svg>
+                        <span class="font-medium">0.8 km • Park Street</span>
+                    </div>
+                </div>
+                <div class="text-right">
+                    <p class="text-3xl font-bold text-primary">₹945</p>
+                    <p class="text-xs text-gray-500 dark:text-gray-400">Total</p>
+                </div>
+            </div>
+            
+            <button onclick="selectQuote('Apollo Pharmacy', 945)" class="w-full py-3 bg-primary hover:bg-pink-600 text-white font-bold rounded-xl transition-all shadow-md">
+                SELECT
+            </button>
+        </div>
+
+        <!-- Quote Card 3 -->
+        <div class="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-2xl p-5 shadow-md quote-card" data-price="980" data-distance="2.1">
+            <div class="flex items-start justify-between mb-4">
+                <div class="flex-1">
+                    <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-1">MedPlus Pharmacy</h3>
+                    <div class="flex items-center gap-2 mb-2">
+                        <div class="flex items-center gap-1">
+                            <span class="text-yellow-500">⭐</span>
+                            <span class="text-sm font-bold text-gray-900 dark:text-white">4.5</span>
+                            <span class="text-xs text-gray-500 dark:text-gray-400">(85)</span>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-1 text-sm text-gray-600 dark:text-gray-400">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
+                        </svg>
+                        <span class="font-medium">2.1 km • Gariahat</span>
+                    </div>
+                </div>
+                <div class="text-right">
+                    <p class="text-3xl font-bold text-primary">₹980</p>
+                    <p class="text-xs text-gray-500 dark:text-gray-400">Total</p>
+                </div>
+            </div>
+            
+            <button onclick="selectQuote('MedPlus Pharmacy', 980)" class="w-full py-3 bg-primary hover:bg-pink-600 text-white font-bold rounded-xl transition-all shadow-md">
+                SELECT
+            </button>
+        </div>
+
+        <!-- Quote Card 4 -->
+        <div class="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-2xl p-5 shadow-md quote-card" data-price="1020" data-distance="1.6">
+            <div class="flex items-start justify-between mb-4">
+                <div class="flex-1">
+                    <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-1">HealthPlus Medical Store</h3>
+                    <div class="flex items-center gap-2 mb-2">
+                        <div class="flex items-center gap-1">
+                            <span class="text-yellow-500">⭐</span>
+                            <span class="text-sm font-bold text-gray-900 dark:text-white">4.6</span>
+                            <span class="text-xs text-gray-500 dark:text-gray-400">(95)</span>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-1 text-sm text-gray-600 dark:text-gray-400">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
+                        </svg>
+                        <span class="font-medium">1.6 km • Rashbehari</span>
+                    </div>
+                </div>
+                <div class="text-right">
+                    <p class="text-3xl font-bold text-primary">₹1020</p>
+                    <p class="text-xs text-gray-500 dark:text-gray-400">Total</p>
+                </div>
+            </div>
+            
+            <button onclick="selectQuote('HealthPlus Medical Store', 1020)" class="w-full py-3 bg-primary hover:bg-pink-600 text-white font-bold rounded-xl transition-all shadow-md">
+                SELECT
+            </button>
+        </div>
+
+        <!-- Quote Card 5 -->
+        <div class="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-2xl p-5 shadow-md quote-card" data-price="1050" data-distance="3.2">
+            <div class="flex items-start justify-between mb-4">
+                <div class="flex-1">
+                    <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-1">Wellness Pharmacy</h3>
+                    <div class="flex items-center gap-2 mb-2">
+                        <div class="flex items-center gap-1">
+                            <span class="text-yellow-500">⭐</span>
+                            <span class="text-sm font-bold text-gray-900 dark:text-white">4.4</span>
+                            <span class="text-xs text-gray-500 dark:text-gray-400">(72)</span>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-1 text-sm text-gray-600 dark:text-gray-400">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
+                        </svg>
+                        <span class="font-medium">3.2 km • Lake Gardens</span>
+                    </div>
+                </div>
+                <div class="text-right">
+                    <p class="text-3xl font-bold text-primary">₹1050</p>
+                    <p class="text-xs text-gray-500 dark:text-gray-400">Total</p>
+                </div>
+            </div>
+            
+            <button onclick="selectQuote('Wellness Pharmacy', 1050)" class="w-full py-3 bg-primary hover:bg-pink-600 text-white font-bold rounded-xl transition-all shadow-md">
+                SELECT
+            </button>
+        </div>
+
+    </div>
+
+    <!-- Scripts -->
+    <style>
+        .hide-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .hide-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+    </style>
+
+    <script>
+        // Theme Toggle
+        const theme = localStorage.getItem('theme') || 'light';
+        if (theme === 'dark') {
+            document.documentElement.classList.add('dark');
+        }
+
+        function toggleTheme() {
+            const html = document.documentElement;
+            if (html.classList.contains('dark')) {
+                html.classList.remove('dark');
+                localStorage.setItem('theme', 'light');
+            } else {
+                html.classList.add('dark');
+                localStorage.setItem('theme', 'dark');
+            }
+        }
+
+        // Simulate real-time quote arrival
+        let quoteCount = 0;
+        const totalQuotes = 5;
+
+        setTimeout(() => {
+            // Hide loading, show sort and quotes
+            document.getElementById('loadingState').classList.add('hidden');
+            document.getElementById('sortSection').classList.remove('hidden');
+            document.getElementById('quotesList').classList.remove('hidden');
+            
+            // Animate quote cards appearing one by one
+            const cards = document.querySelectorAll('.quote-card');
+            cards.forEach((card, index) => {
+                card.style.opacity = '0';
+                card.style.transform = 'translateY(20px)';
+                
+                setTimeout(() => {
+                    card.style.transition = 'all 0.5s ease';
+                    card.style.opacity = '1';
+                    card.style.transform = 'translateY(0)';
+                    
+                    quoteCount++;
+                    updateQuoteCount();
+                }, index * 600); // Stagger animation
+            });
+        }, 3000); // Show loading for 3 seconds
+
+        function updateQuoteCount() {
+            document.getElementById('quoteCount').textContent = `${quoteCount} Quotes`;
+        }
+
+        // Sort by Price
+        function sortByPrice() {
+            const container = document.getElementById('quotesList');
+            const cards = Array.from(container.querySelectorAll('.quote-card'));
+            
+            cards.sort((a, b) => {
+                return parseFloat(a.dataset.price) - parseFloat(b.dataset.price);
+            });
+            
+            cards.forEach(card => container.appendChild(card));
+            
+            // Update button styles
+            document.getElementById('sortPrice').className = 'px-4 py-2 bg-primary text-white text-sm font-bold rounded-full whitespace-nowrap shadow-md flex items-center gap-2';
+            document.getElementById('sortDistance').className = 'px-4 py-2 bg-white dark:bg-gray-800 border-2 border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-300 text-sm font-bold rounded-full whitespace-nowrap flex items-center gap-2';
+        }
+
+        // Sort by Distance
+        function sortByDistance() {
+            const container = document.getElementById('quotesList');
+            const cards = Array.from(container.querySelectorAll('.quote-card'));
+            
+            cards.sort((a, b) => {
+                return parseFloat(a.dataset.distance) - parseFloat(b.dataset.distance);
+            });
+            
+            cards.forEach(card => container.appendChild(card));
+            
+            // Update button styles
+            document.getElementById('sortDistance').className = 'px-4 py-2 bg-primary text-white text-sm font-bold rounded-full whitespace-nowrap shadow-md flex items-center gap-2';
+            document.getElementById('sortPrice').className = 'px-4 py-2 bg-white dark:bg-gray-800 border-2 border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-300 text-sm font-bold rounded-full whitespace-nowrap flex items-center gap-2';
+        }
+
+        // Select Quote
+        function selectQuote(pharmacyName, price) {
+            window.location.href = "{% url 'customer:checkout_order_confirmation' %}";
+        }
+    </script>
+
+</body>
+</html>

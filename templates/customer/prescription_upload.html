@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Upload Prescription - RunPharmacy</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#D92E7F',
+                        secondary: '#6B7FDB',
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-gray-50 dark:bg-gray-900 min-h-screen transition-colors duration-200 pb-6">
+    
+    <!-- Theme Toggle (Top Right) -->
+    <div class="fixed top-4 right-4 z-50">
+        <button onclick="toggleTheme()" class="p-2 rounded-full bg-white dark:bg-gray-800 shadow-lg">
+            <svg class="w-5 h-5 text-gray-800 dark:text-yellow-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path class="dark:hidden" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/>
+                <path class="hidden dark:block" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"/>
+            </svg>
+        </button>
+    </div>
+
+    <!-- Header -->
+    <div class="bg-white dark:bg-gray-800 shadow-sm border-b border-gray-200 dark:border-gray-700 px-4 py-4 sticky top-0 z-40">
+        <div class="flex items-center gap-3">
+            <!-- Back Button -->
+            <button onclick="history.back()" class="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-xl transition-colors">
+                <svg class="w-6 h-6 text-gray-700 dark:text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
+                </svg>
+            </button>
+            <div class="flex-1">
+                <h1 class="text-lg font-bold text-gray-900 dark:text-white">Upload Prescription</h1>
+                <p class="text-xs text-gray-500 dark:text-gray-400">Get quotes from nearby pharmacies</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="px-4 py-6 space-y-6">
+        
+        <!-- Upload Options (Initial State) -->
+        <div id="uploadOptions" class="space-y-4">
+            
+            <p class="text-center text-sm text-gray-600 dark:text-gray-400 mb-6">
+                Choose how you want to upload your prescription
+            </p>
+
+            <!-- Take Photo Button -->
+            <button onclick="takePhoto()" class="w-full bg-gradient-to-br from-primary to-pink-600 dark:from-primary dark:to-pink-700 rounded-3xl p-8 shadow-xl hover:shadow-2xl transform hover:scale-[1.02] active:scale-[0.98] transition-all duration-200">
+                <div class="flex flex-col items-center text-center">
+                    <div class="w-20 h-20 bg-white/20 rounded-full flex items-center justify-center mb-4 backdrop-blur-sm">
+                        <svg class="w-12 h-12 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"/>
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"/>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-bold text-white mb-2">Take Photo</h3>
+                    <p class="text-white/90 text-sm">Use your camera to capture prescription</p>
+                </div>
+            </button>
+
+            <!-- Choose from Gallery Button -->
+            <button onclick="chooseFromGallery()" class="w-full bg-white dark:bg-gray-800 border-2 border-gray-200 dark:border-gray-700 rounded-3xl p-8 shadow-md hover:shadow-xl transform hover:scale-[1.02] active:scale-[0.98] transition-all duration-200">
+                <div class="flex flex-col items-center text-center">
+                    <div class="w-20 h-20 bg-secondary/10 dark:bg-secondary/20 rounded-full flex items-center justify-center mb-4">
+                        <svg class="w-12 h-12 text-secondary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-2">Choose from Gallery</h3>
+                    <p class="text-gray-600 dark:text-gray-400 text-sm">Select an existing image or PDF</p>
+                </div>
+            </button>
+
+        </div>
+
+        <!-- Preview Section (Hidden Initially) -->
+        <div id="previewSection" class="hidden space-y-6">
+            
+            <!-- Image Preview Card -->
+            <div class="bg-white dark:bg-gray-800 rounded-2xl p-4 shadow-md border border-gray-200 dark:border-gray-700">
+                <div class="flex items-center justify-between mb-3">
+                    <h3 class="text-base font-bold text-gray-900 dark:text-white">Your Prescription</h3>
+                    <button onclick="removePrescription()" class="text-sm text-red-600 dark:text-red-400 font-semibold hover:underline">
+                        Remove
+                    </button>
+                </div>
+                
+                <!-- Image Preview -->
+                <div class="relative bg-gray-100 dark:bg-gray-700 rounded-xl overflow-hidden mb-3">
+                    <img 
+                        id="prescriptionPreview"
+                        src="https://images.unsplash.com/photo-1585435557343-3b092031a831?w=800&q=80" 
+                        alt="Prescription Preview" 
+                        class="w-full h-64 object-cover rounded-xl"
+                    >
+                    <button onclick="viewFullImage()" class="absolute bottom-3 right-3 px-3 py-2 bg-black/50 hover:bg-black/70 backdrop-blur-sm rounded-lg text-white text-xs font-semibold flex items-center gap-1 transition-all">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7"/>
+                        </svg>
+                        View Full
+                    </button>
+                </div>
+
+                <div class="flex items-center gap-2 text-sm text-green-600 dark:text-green-400">
+                    <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                    </svg>
+                    <span class="font-semibold">Prescription uploaded successfully</span>
+                </div>
+            </div>
+
+            <!-- Optional Notes -->
+            <div class="bg-white dark:bg-gray-800 rounded-2xl p-5 shadow-md border border-gray-200 dark:border-gray-700">
+                <label class="block text-sm font-bold text-gray-900 dark:text-white mb-3">
+                    Add Notes (Optional)
+                </label>
+                <textarea 
+                    id="pharmacistNotes"
+                    rows="4"
+                    placeholder="E.g., 'Please provide generic options if available' or 'Need urgent delivery'"
+                    class="w-full px-4 py-3 bg-gray-50 dark:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded-xl text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all resize-none"
+                ></textarea>
+                <p class="text-xs text-gray-500 dark:text-gray-400 mt-2">
+                    💡 Tip: Mention brand preferences, quantities, or special requests
+                </p>
+            </div>
+
+            <!-- Tips Card -->
+            <div class="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-2xl p-4">
+                <div class="flex items-start gap-3">
+                    <svg class="w-5 h-5 text-blue-600 dark:text-blue-400 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                    </svg>
+                    <div>
+                        <h4 class="text-sm font-bold text-blue-900 dark:text-blue-300 mb-1">Quick Tips</h4>
+                        <ul class="text-xs text-blue-800 dark:text-blue-200 space-y-1">
+                            <li>✓ Ensure prescription is clear and readable</li>
+                            <li>✓ All medicine names should be visible</li>
+                            <li>✓ Include doctor's signature if present</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Submit Button -->
+            <button 
+                onclick="submitPrescription()"
+                class="w-full py-5 bg-gradient-to-r from-green-500 to-green-600 text-white font-bold text-lg rounded-2xl shadow-xl hover:shadow-2xl transform hover:scale-[1.02] active:scale-[0.98] transition-all duration-200 flex items-center justify-center gap-2"
+            >
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
+                </svg>
+                Submit & Get Quotes
+            </button>
+
+        </div>
+
+    </div>
+
+    <!-- Full Image Modal -->
+    <div id="fullImageModal" class="fixed inset-0 bg-black/90 z-50 hidden flex items-center justify-center p-4" onclick="closeFullImage()">
+        <button onclick="closeFullImage()" class="absolute top-4 right-4 p-2 bg-white/10 hover:bg-white/20 rounded-full transition-colors">
+            <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+            </svg>
+        </button>
+        <img 
+            src="https://images.unsplash.com/photo-1585435557343-3b092031a831?w=1200&q=80" 
+            alt="Prescription Full View" 
+            class="max-w-full max-h-full object-contain"
+            onclick="event.stopPropagation()"
+        >
+    </div>
+
+    <!-- Scripts -->
+    <script>
+        // Theme Toggle
+        const theme = localStorage.getItem('theme') || 'light';
+        if (theme === 'dark') {
+            document.documentElement.classList.add('dark');
+        }
+
+        function toggleTheme() {
+            const html = document.documentElement;
+            if (html.classList.contains('dark')) {
+                html.classList.remove('dark');
+                localStorage.setItem('theme', 'light');
+            } else {
+                html.classList.add('dark');
+                localStorage.setItem('theme', 'dark');
+            }
+        }
+
+        // Take Photo
+        function takePhoto() {
+            // Simulate camera capture
+            alert('📷 Opening Camera...\n\n(In production, this would open the device camera to capture the prescription)');
+            
+            // Show preview after "capture"
+            setTimeout(() => {
+                showPreview();
+            }, 500);
+        }
+
+        // Choose from Gallery
+        function chooseFromGallery() {
+            // Simulate gallery selection
+            alert('🖼️ Opening Gallery...\n\n(In production, this would open the device gallery to select an image)');
+            
+            // Show preview after "selection"
+            setTimeout(() => {
+                showPreview();
+            }, 500);
+        }
+
+        // Show Preview Section
+        function showPreview() {
+            document.getElementById('uploadOptions').classList.add('hidden');
+            document.getElementById('previewSection').classList.remove('hidden');
+        }
+
+        // Remove Prescription
+        function removePrescription() {
+            const confirmed = confirm('⚠️ Are you sure you want to remove this prescription?\n\nYou will need to upload it again.');
+            
+            if (confirmed) {
+                document.getElementById('previewSection').classList.add('hidden');
+                document.getElementById('uploadOptions').classList.remove('hidden');
+                document.getElementById('pharmacistNotes').value = '';
+            }
+        }
+
+        // View Full Image
+        function viewFullImage() {
+            const modal = document.getElementById('fullImageModal');
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+            document.body.style.overflow = 'hidden';
+        }
+
+        // Close Full Image
+        function closeFullImage() {
+            const modal = document.getElementById('fullImageModal');
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+            document.body.style.overflow = 'auto';
+        }
+
+        // Submit Prescription
+        function submitPrescription() {
+            const notes = document.getElementById('pharmacistNotes').value;
+            
+            let message = '✅ Submitting your prescription...\n\n';
+            message += '📍 Sending to 12 nearby pharmacies\n';
+            
+            if (notes.trim()) {
+                message += `\n📝 Notes: "${notes}"\n`;
+            }
+            
+            message += '\nYou will receive quotes shortly!';
+            
+            alert(message);
+            
+            window.location.href = "{% url 'customer:quote_comparison' %}";
+        }
+    </script>
+
+</body>
+</html>

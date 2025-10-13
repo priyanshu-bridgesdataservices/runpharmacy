@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home - RunPharmacy</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#D92E7F',
+                        secondary: '#6B7FDB',
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-gray-50 dark:bg-gray-900 min-h-screen transition-colors duration-200 pb-24">
+    
+    <!-- Theme Toggle (Top Right) -->
+    <div class="fixed top-4 right-4 z-50">
+        <button onclick="toggleTheme()" class="p-2 rounded-full bg-white dark:bg-gray-800 shadow-lg">
+            <svg class="w-5 h-5 text-gray-800 dark:text-yellow-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path class="dark:hidden" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/>
+                <path class="hidden dark:block" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"/>
+            </svg>
+        </button>
+    </div>
+
+    <!-- Header -->
+    <div class="bg-white dark:bg-gray-800 shadow-sm border-b border-gray-200 dark:border-gray-700 px-6 py-5">
+        <h1 class="text-2xl font-bold text-gray-900 dark:text-white mb-1">Hello, Priya! 👋</h1>
+        <div class="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-400">
+            <svg class="w-4 h-4 text-primary" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/>
+            </svg>
+            <span class="font-medium">Park Street, Kolkata</span>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="px-4 py-6 space-y-6">
+        
+        <!-- PRIMARY CTA: Upload Prescription -->
+        <div class="bg-gradient-to-br from-primary to-pink-600 dark:from-primary dark:to-pink-700 rounded-3xl p-8 shadow-2xl">
+            <div class="text-center mb-6">
+                <div class="w-20 h-20 mx-auto mb-4 bg-white/20 rounded-full flex items-center justify-center backdrop-blur-sm">
+                    <svg class="w-12 h-12 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+                    </svg>
+                </div>
+                <h2 class="text-2xl font-bold text-white mb-2">Upload Prescription</h2>
+                <p class="text-white/90 text-sm">Get competitive price quotes in minutes from nearby pharmacies</p>
+            </div>
+            
+            <button onclick="uploadPrescription()" class="w-full py-4 bg-white text-primary font-bold text-lg rounded-2xl shadow-lg hover:shadow-xl transform hover:scale-[1.02] active:scale-[0.98] transition-all duration-200 flex items-center justify-center gap-2">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
+                </svg>
+                Start New Order
+            </button>
+        </div>
+
+        <!-- Active Order Status (Conditional) -->
+        <div id="activeOrderCard" class="bg-blue-50 dark:bg-blue-900/20 border-2 border-blue-200 dark:border-blue-800 rounded-2xl p-5 shadow-md">
+            <div class="flex items-start justify-between mb-3">
+                <div class="flex-1">
+                    <div class="flex items-center gap-2 mb-2">
+                        <span class="bg-blue-500 text-white text-xs font-bold px-2 py-1 rounded-full animate-pulse">ACTIVE</span>
+                        <span class="text-sm font-bold text-gray-900 dark:text-white">Order #C98B76</span>
+                    </div>
+                    <p class="text-sm text-gray-700 dark:text-gray-300 font-medium mb-1">
+                        <span class="font-semibold text-blue-700 dark:text-blue-400">Apollo Pharmacy</span>
+                    </p>
+                    <p class="text-sm text-gray-600 dark:text-gray-400">Order is Out for Delivery 🚚</p>
+                </div>
+                <button onclick="dismissOrder()" class="p-1 hover:bg-blue-100 dark:hover:bg-blue-800 rounded-lg transition-colors">
+                    <svg class="w-5 h-5 text-gray-500 dark:text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                    </svg>
+                </button>
+            </div>
+            
+            <button onclick="trackOrder()" class="w-full py-3 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-xl transition-all flex items-center justify-center gap-2">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
+                </svg>
+                Track Order
+            </button>
+        </div>
+
+        <!-- How It Works Section -->
+        <div class="bg-white dark:bg-gray-800 rounded-2xl p-6 shadow-md border border-gray-200 dark:border-gray-700">
+            <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-4">How It Works</h3>
+            
+            <div class="space-y-5">
+                
+                <!-- Step 1 -->
+                <div class="flex items-start gap-4">
+                    <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-primary/20 to-primary/10 dark:from-primary/30 dark:to-primary/20 flex items-center justify-center flex-shrink-0">
+                        <svg class="w-7 h-7 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"/>
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"/>
+                        </svg>
+                    </div>
+                    <div class="flex-1">
+                        <h4 class="text-base font-bold text-gray-900 dark:text-white mb-1">1. Upload</h4>
+                        <p class="text-sm text-gray-600 dark:text-gray-400">Snap a picture of your prescription or choose from gallery</p>
+                    </div>
+                </div>
+
+                <!-- Step 2 -->
+                <div class="flex items-start gap-4">
+                    <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-secondary/20 to-secondary/10 dark:from-secondary/30 dark:to-secondary/20 flex items-center justify-center flex-shrink-0">
+                        <svg class="w-7 h-7 text-secondary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"/>
+                        </svg>
+                    </div>
+                    <div class="flex-1">
+                        <h4 class="text-base font-bold text-gray-900 dark:text-white mb-1">2. Compare</h4>
+                        <p class="text-sm text-gray-600 dark:text-gray-400">Receive quotes from nearby pharmacies and compare prices</p>
+                    </div>
+                </div>
+
+                <!-- Step 3 -->
+                <div class="flex items-start gap-4">
+                    <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-green-500/20 to-green-500/10 dark:from-green-500/30 dark:to-green-500/20 flex items-center justify-center flex-shrink-0">
+                        <svg class="w-7 h-7 text-green-600 dark:text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                        </svg>
+                    </div>
+                    <div class="flex-1">
+                        <h4 class="text-base font-bold text-gray-900 dark:text-white mb-1">3. Order</h4>
+                        <p class="text-sm text-gray-600 dark:text-gray-400">Choose the best price and get delivery or pickup</p>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- Quick Stats -->
+        <div class="grid grid-cols-2 gap-4">
+            <div class="bg-white dark:bg-gray-800 rounded-2xl p-4 shadow-md border border-gray-200 dark:border-gray-700 text-center">
+                <p class="text-3xl font-bold text-primary mb-1">12+</p>
+                <p class="text-xs text-gray-600 dark:text-gray-400 font-medium">Nearby Pharmacies</p>
+            </div>
+            <div class="bg-white dark:bg-gray-800 rounded-2xl p-4 shadow-md border border-gray-200 dark:border-gray-700 text-center">
+                <p class="text-3xl font-bold text-secondary mb-1">2-5 min</p>
+                <p class="text-xs text-gray-600 dark:text-gray-400 font-medium">Get Quotes Fast</p>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Bottom Navigation -->
+    <div class="fixed bottom-0 left-0 right-0 bg-white dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700 shadow-lg">
+        <div class="flex items-center justify-around py-3 px-6">
+            
+            <!-- Home Tab (Active) -->
+            <button onclick="window.location='{% url 'customer:dashboard' %}'" class="flex flex-col items-center gap-1 px-4 py-2 rounded-xl bg-primary/10 dark:bg-primary/20">
+                <svg class="w-6 h-6 text-primary" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/>
+                </svg>
+                <span class="text-xs font-bold text-primary">Home</span>
+            </button>
+
+            <!-- My Orders Tab -->
+            <button onclick="window.location='{% url 'customer:my_orders' %}'" class="flex flex-col items-center gap-1 px-4 py-2">
+                <svg class="w-6 h-6 text-gray-500 dark:text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/>
+                </svg>
+                <span class="text-xs font-semibold text-gray-500 dark:text-gray-400">My Orders</span>
+            </button>
+
+            <!-- Profile Tab -->
+            <button onclick="window.location='{% url 'customer:profile' %}'" class="flex flex-col items-center gap-1 px-4 py-2">
+                <svg class="w-6 h-6 text-gray-500 dark:text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
+                </svg>
+                <span class="text-xs font-semibold text-gray-500 dark:text-gray-400">Profile</span>
+            </button>
+
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script>
+        // Theme Toggle
+        const theme = localStorage.getItem('theme') || 'light';
+        if (theme === 'dark') {
+            document.documentElement.classList.add('dark');
+        }
+
+        function toggleTheme() {
+            const html = document.documentElement;
+            if (html.classList.contains('dark')) {
+                html.classList.remove('dark');
+                localStorage.setItem('theme', 'light');
+            } else {
+                html.classList.add('dark');
+                localStorage.setItem('theme', 'dark');
+            }
+        }
+
+        // Upload Prescription
+        function uploadPrescription() {
+            window.location.href = "{% url 'customer:prescription_upload' %}";
+        }
+
+        // Track Order
+        function trackOrder() {
+            alert('📍 Opening Order Tracking...\n\nOrder #C98B76\nApollo Pharmacy\nStatus: Out for Delivery');
+            // In production: window.location.href = 'track-order.html?id=C98B76';
+        }
+
+        // Dismiss Active Order Card
+        function dismissOrder() {
+            const card = document.getElementById('activeOrderCard');
+            card.style.transition = 'all 0.3s ease';
+            card.style.opacity = '0';
+            card.style.transform = 'translateX(100%)';
+            setTimeout(() => {
+                card.style.display = 'none';
+            }, 300);
+        }
+    </script>
+
+</body>
+</html>
