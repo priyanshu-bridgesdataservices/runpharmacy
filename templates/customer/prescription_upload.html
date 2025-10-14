@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -102,7 +103,7 @@
                 <div class="relative bg-gray-100 dark:bg-gray-700 rounded-xl overflow-hidden mb-3">
                     <img 
                         id="prescriptionPreview"
-                        src="https://images.unsplash.com/photo-1585435557343-3b092031a831?w=800&q=80" 
+                        src="{% static 'images/prescription.jpg' %}" 
                         alt="Prescription Preview" 
                         class="w-full h-64 object-cover rounded-xl"
                     >
@@ -178,7 +179,7 @@
             </svg>
         </button>
         <img 
-            src="https://images.unsplash.com/photo-1585435557343-3b092031a831?w=1200&q=80" 
+            src="{% static 'images/prescription.jpg' %}" 
             alt="Prescription Full View" 
             class="max-w-full max-h-full object-contain"
             onclick="event.stopPropagation()"
@@ -207,7 +208,7 @@
         // Take Photo
         function takePhoto() {
             // Simulate camera capture
-            alert('📷 Opening Camera...\n\n(In production, this would open the device camera to capture the prescription)');
+            alert('📷 Opening Camera...\n\n');
             
             // Show preview after "capture"
             setTimeout(() => {
@@ -218,7 +219,7 @@
         // Choose from Gallery
         function chooseFromGallery() {
             // Simulate gallery selection
-            alert('🖼️ Opening Gallery...\n\n(In production, this would open the device gallery to select an image)');
+            alert('🖼️ Opening Gallery...\n\n');
             
             // Show preview after "selection"
             setTimeout(() => {

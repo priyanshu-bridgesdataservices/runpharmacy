@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -78,7 +79,7 @@
             <div id="prescriptionViewer" class="relative bg-gray-100 dark:bg-gray-700 rounded-xl overflow-hidden cursor-zoom-in" onclick="zoomImage()">
                 <img 
                     id="prescriptionImage"
-                    src="https://images.unsplash.com/photo-1585435557343-3b092031a831?w=800&q=80" 
+                    src="{% static 'images/prescription.jpg' %}" 
                     alt="Prescription" 
                     class="w-full h-auto rounded-xl transition-transform duration-300"
                 >
@@ -153,7 +154,7 @@
         </button>
         <img 
             id="zoomedImage"
-            src="https://images.unsplash.com/photo-1585435557343-3b092031a831?w=1200&q=80" 
+            src="{% static 'images/prescription.jpg' %}" 
             alt="Prescription Zoomed" 
             class="max-w-full max-h-full object-contain"
         >

@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -99,7 +100,7 @@
                 <p class="text-xs text-gray-500 dark:text-gray-400 mb-2">Prescription</p>
                 <div class="relative bg-gray-100 dark:bg-gray-700 rounded-xl overflow-hidden cursor-pointer" onclick="viewPrescription()">
                     <img 
-                        src="https://images.unsplash.com/photo-1585435557343-3b092031a831?w=600&q=80" 
+                        src="{% static 'images/prescription.jpg' %}" 
                         alt="Prescription" 
                         class="w-full h-32 object-cover"
                     >
@@ -210,7 +211,7 @@
             </svg>
         </button>
         <img 
-            src="https://images.unsplash.com/photo-1585435557343-3b092031a831?w=1200&q=80" 
+            src="{% static 'images/prescription.jpg' %}" 
             alt="Prescription Zoomed" 
             class="max-w-full max-h-full object-contain"
             onclick="event.stopPropagation()"
@@ -238,7 +239,7 @@
 
         // Call Customer
         function callCustomer() {
-            alert('📞 Calling Rohan Sharma...\n\nMobile: +91 98765 43210\n\n(In production, this would initiate a phone call)');
+            alert('📞 Calling Rohan Sharma...\n\nMobile: +91 98765 43210\n\n');
         }
 
         // View Prescription

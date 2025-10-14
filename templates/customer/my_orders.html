@@ -365,13 +365,13 @@
 
         // View Order Details
         function viewOrderDetails(orderId) {
-            {% comment %} alert(`📦 Opening Order Details...\n\nOrder ID: ${orderId}\n\n(In production, this would show complete order information and tracking)`) {% endcomment %}
+            {% comment %} alert(`📦 Opening Order Details...\n\nOrder ID: ${orderId}\n\n`) {% endcomment %}
             window.location.href = "{% url 'customer:order_tracking' %}";
         }
 
         // Call Pharmacy
         function callPharmacy(pharmacyName) {
-            alert(`📞 Calling ${pharmacyName}...\n\n(In production, this would initiate a phone call to the pharmacy)`);
+            alert(`📞 Calling ${pharmacyName}...\n\n`);
         }
 
         // Reorder
