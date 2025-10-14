@@ -215,7 +215,7 @@
         // Track Order
         function trackOrder() {
             alert('📍 Opening Order Tracking...\n\nOrder #C98B76\nApollo Pharmacy\nStatus: Out for Delivery');
-            // In production: window.location.href = 'track-order.html?id=C98B76';
+            window.location.href = "{% url 'customer:order_tracking' %}";
         }
 
         // Dismiss Active Order Card
