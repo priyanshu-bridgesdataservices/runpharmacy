@@ -238,7 +238,15 @@
                 'help': 'Help & Support'
             };
             
-            alert(`📱 Navigating to ${sectionNames[section]}...\n\n`);
+            if (section === 'editProfile') {
+                window.location.href = "{% url 'pharmacy:edit_profile' %}";
+            } else if (section === 'earnings') {
+                window.location.href = "{% url 'pharmacy:earnings_payouts' %}";
+            } else if (section === 'notifications') {
+                window.location.href = "{% url 'pharmacy:notification_settings' %}";
+            } else if (section === 'help') {
+                window.location.href = "{% url 'pharmacy:help_support' %}";
+            }
         }
 
         // Logout

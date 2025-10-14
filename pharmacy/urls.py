@@ -11,4 +11,8 @@ urlpatterns = [
     path('order-history/', views.order_history, name='order_history'),
     path('order-details/', views.order_details, name='order_details'),
     path('profile/', views.profile, name='profile'),
+    path('edit-profile/', views.edit_profile, name='edit_profile'),
+    path('earnings-payouts/', views.earnings_payouts, name='earnings_payouts'),
+    path('notification-settings/', views.notification_settings, name='notification_settings'),
+    path('help-support/', views.help_support, name='help_support'),
 ]

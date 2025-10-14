@@ -1,0 +1,395 @@
+<!-- templates/pharmacy/earnings_payouts.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Earnings & Payouts - RunPharmacy Partner</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#D92E7F',
+                        secondary: '#6B7FDB',
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-gray-50 dark:bg-gray-900 min-h-screen transition-colors duration-200 pb-6">
+    
+    <!-- Theme Toggle (Top Right) -->
+    <div class="fixed top-4 right-4 z-50">
+        <button onclick="toggleTheme()" class="p-2 rounded-full bg-white dark:bg-gray-800 shadow-lg">
+            <svg class="w-5 h-5 text-gray-800 dark:text-yellow-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path class="dark:hidden" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/>
+                <path class="hidden dark:block" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"/>
+            </svg>
+        </button>
+    </div>
+
+    <!-- Header -->
+    <div class="bg-white dark:bg-gray-800 shadow-sm border-b border-gray-200 dark:border-gray-700 px-4 py-4 sticky top-0 z-40">
+        <div class="flex items-center gap-3">
+            <!-- Back Button -->
+            <button onclick="history.back()" class="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-xl transition-colors">
+                <svg class="w-6 h-6 text-gray-700 dark:text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
+                </svg>
+            </button>
+            <div class="flex-1">
+                <h1 class="text-lg font-bold text-gray-900 dark:text-white">Earnings & Payouts</h1>
+                <p class="text-xs text-gray-500 dark:text-gray-400">Track your income and payments</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="px-4 py-6 space-y-6">
+        
+        <!-- Total Earnings Card -->
+        <div class="bg-gradient-to-br from-green-500 to-green-600 rounded-3xl p-6 shadow-2xl text-white">
+            <div class="flex items-center gap-2 mb-2">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                </svg>
+                <span class="text-sm font-semibold opacity-90">Total Earnings</span>
+            </div>
+            <h2 class="text-4xl font-bold mb-1">₹ 1,48,520</h2>
+            <p class="text-sm opacity-80">Lifetime earnings from RunPharmacy</p>
+            
+            <div class="mt-6 pt-6 border-t border-white/20 grid grid-cols-2 gap-4">
+                <div>
+                    <p class="text-xs opacity-80 mb-1">This Month</p>
+                    <p class="text-xl font-bold">₹ 48,520</p>
+                </div>
+                <div>
+                    <p class="text-xs opacity-80 mb-1">Last Month</p>
+                    <p class="text-xl font-bold">₹ 42,310</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Pending & Available Balance -->
+        <div class="grid grid-cols-2 gap-4">
+            <!-- Available Balance -->
+            <div class="bg-white dark:bg-gray-800 rounded-2xl p-5 shadow-md border border-gray-200 dark:border-gray-700">
+                <div class="flex items-center gap-2 mb-3">
+                    <div class="w-10 h-10 rounded-xl bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center">
+                        <svg class="w-5 h-5 text-blue-600 dark:text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                        </svg>
+                    </div>
+                </div>
+                <p class="text-xs text-gray-500 dark:text-gray-400 mb-1">Available</p>
+                <p class="text-2xl font-bold text-gray-900 dark:text-white">₹ 12,450</p>
+                <button onclick="requestPayout()" class="mt-3 w-full py-2 bg-secondary hover:bg-secondary/90 text-white font-bold text-xs rounded-lg transition-all">
+                    Withdraw
+                </button>
+            </div>
+
+            <!-- Pending Balance -->
+            <div class="bg-white dark:bg-gray-800 rounded-2xl p-5 shadow-md border border-gray-200 dark:border-gray-700">
+                <div class="flex items-center gap-2 mb-3">
+                    <div class="w-10 h-10 rounded-xl bg-orange-100 dark:bg-orange-900/30 flex items-center justify-center">
+                        <svg class="w-5 h-5 text-orange-600 dark:text-orange-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                        </svg>
+                    </div>
+                </div>
+                <p class="text-xs text-gray-500 dark:text-gray-400 mb-1">Pending</p>
+                <p class="text-2xl font-bold text-gray-900 dark:text-white">₹ 5,230</p>
+                <p class="text-xs text-gray-500 dark:text-gray-400 mt-3">Clearing in 2 days</p>
+            </div>
+        </div>
+
+        <!-- Quick Stats -->
+        <div class="bg-white dark:bg-gray-800 rounded-2xl p-5 shadow-md border border-gray-200 dark:border-gray-700">
+            <h3 class="text-base font-bold text-gray-900 dark:text-white mb-4">This Month's Summary</h3>
+            
+            <div class="space-y-4">
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 rounded-xl bg-green-100 dark:bg-green-900/30 flex items-center justify-center">
+                            <svg class="w-5 h-5 text-green-600 dark:text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                            </svg>
+                        </div>
+                        <div>
+                            <p class="text-sm font-semibold text-gray-900 dark:text-white">Completed Orders</p>
+                            <p class="text-xs text-gray-500 dark:text-gray-400">Successfully fulfilled</p>
+                        </div>
+                    </div>
+                    <p class="text-xl font-bold text-gray-900 dark:text-white">87</p>
+                </div>
+
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 rounded-xl bg-primary/20 dark:bg-primary/30 flex items-center justify-center">
+                            <svg class="w-5 h-5 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                            </svg>
+                        </div>
+                        <div>
+                            <p class="text-sm font-semibold text-gray-900 dark:text-white">Average Order Value</p>
+                            <p class="text-xs text-gray-500 dark:text-gray-400">Per transaction</p>
+                        </div>
+                    </div>
+                    <p class="text-xl font-bold text-gray-900 dark:text-white">₹ 558</p>
+                </div>
+
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 rounded-xl bg-secondary/20 dark:bg-secondary/30 flex items-center justify-center">
+                            <svg class="w-5 h-5 text-secondary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/>
+                            </svg>
+                        </div>
+                        <div>
+                            <p class="text-sm font-semibold text-gray-900 dark:text-white">Growth vs Last Month</p>
+                            <p class="text-xs text-gray-500 dark:text-gray-400">Revenue increase</p>
+                        </div>
+                    </div>
+                    <p class="text-xl font-bold text-green-600 dark:text-green-500">+14.5%</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Payout Methods -->
+        <div>
+            <div class="flex items-center justify-between mb-4">
+                <h2 class="text-base font-bold text-gray-900 dark:text-white">Payout Methods</h2>
+                <button onclick="addPayoutMethod()" class="text-sm text-primary font-bold hover:underline">+ Add New</button>
+            </div>
+
+            <div class="space-y-3">
+                <!-- Bank Account (Default) -->
+                <div class="bg-white dark:bg-gray-800 border-2 border-primary dark:border-primary rounded-2xl p-4 shadow-md relative">
+                    <div class="absolute top-3 right-3">
+                        <span class="bg-primary text-white text-xs font-bold px-3 py-1 rounded-full">PRIMARY</span>
+                    </div>
+
+                    <div class="flex items-start gap-4 mb-3 pr-20">
+                        <div class="w-12 h-12 rounded-xl bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center">
+                            <svg class="w-6 h-6 text-blue-600 dark:text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"/>
+                            </svg>
+                        </div>
+                        <div class="flex-1">
+                            <p class="text-base font-bold text-gray-900 dark:text-white mb-1">HDFC Bank</p>
+                            <p class="text-sm text-gray-600 dark:text-gray-400">Account: ••••••4532</p>
+                            <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">IFSC: HDFC0001234</p>
+                        </div>
+                    </div>
+
+                    <div class="flex gap-2">
+                        <button onclick="editPayoutMethod(1)" class="flex-1 py-2 bg-white dark:bg-gray-700 border-2 border-gray-200 dark:border-gray-600 text-gray-700 dark:text-gray-300 font-bold text-sm rounded-xl hover:bg-gray-50 dark:hover:bg-gray-600 transition-all">
+                            Edit
+                        </button>
+                        <button onclick="deletePayoutMethod(1)" class="flex-1 py-2 bg-red-50 dark:bg-red-900/20 border-2 border-red-200 dark:border-red-800 text-red-600 dark:text-red-400 font-bold text-sm rounded-xl hover:bg-red-100 dark:hover:bg-red-900/30 transition-all">
+                            Remove
+                        </button>
+                    </div>
+                </div>
+
+                <!-- UPI -->
+                <div class="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-2xl p-4 shadow-md">
+                    <div class="flex items-start gap-4 mb-3">
+                        <div class="w-12 h-12 rounded-xl bg-purple-100 dark:bg-purple-900/30 flex items-center justify-center">
+                            <svg class="w-6 h-6 text-purple-600 dark:text-purple-400" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M12 2L2 7v10c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V7l-10-5z"/>
+                            </svg>
+                        </div>
+                        <div class="flex-1">
+                            <p class="text-base font-bold text-gray-900 dark:text-white mb-1">UPI</p>
+                            <p class="text-sm text-gray-600 dark:text-gray-400">pharmacy@paytm</p>
+                        </div>
+                    </div>
+
+                    <div class="flex gap-2">
+                        <button onclick="setPrimaryPayout(2)" class="flex-1 py-2 bg-secondary/10 dark:bg-secondary/20 border-2 border-secondary dark:border-secondary text-secondary dark:text-secondary font-bold text-sm rounded-xl hover:bg-secondary/20 dark:hover:bg-secondary/30 transition-all">
+                            Set as Primary
+                        </button>
+                        <button onclick="editPayoutMethod(2)" class="px-4 py-2 bg-white dark:bg-gray-700 border-2 border-gray-200 dark:border-gray-600 text-gray-700 dark:text-gray-300 font-bold text-sm rounded-xl hover:bg-gray-50 dark:hover:bg-gray-600 transition-all">
+                            Edit
+                        </button>
+                        <button onclick="deletePayoutMethod(2)" class="px-4 py-2 bg-red-50 dark:bg-red-900/20 border-2 border-red-200 dark:border-red-800 text-red-600 dark:text-red-400 font-bold text-sm rounded-xl hover:bg-red-100 dark:hover:bg-red-900/30 transition-all">
+                            Remove
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Transaction History -->
+        <div>
+            <h2 class="text-base font-bold text-gray-900 dark:text-white mb-4">Recent Transactions</h2>
+
+            <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-md border border-gray-200 dark:border-gray-700 overflow-hidden">
+                
+                <!-- Transaction 1 -->
+                <div class="px-5 py-4 border-b border-gray-200 dark:border-gray-700">
+                    <div class="flex items-center justify-between mb-2">
+                        <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 rounded-xl bg-green-100 dark:bg-green-900/30 flex items-center justify-center">
+                                <svg class="w-5 h-5 text-green-600 dark:text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
+                                </svg>
+                            </div>
+                            <div>
+                                <p class="text-sm font-bold text-gray-900 dark:text-white">Payout Received</p>
+                                <p class="text-xs text-gray-500 dark:text-gray-400">Oct 10, 2025 • 3:45 PM</p>
+                            </div>
+                        </div>
+                        <div class="text-right">
+                            <p class="text-base font-bold text-green-600 dark:text-green-500">+ ₹ 8,450</p>
+                            <p class="text-xs text-gray-500 dark:text-gray-400">To HDFC Bank</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Transaction 2 -->
+                <div class="px-5 py-4 border-b border-gray-200 dark:border-gray-700">
+                    <div class="flex items-center justify-between mb-2">
+                        <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 rounded-xl bg-green-100 dark:bg-green-900/30 flex items-center justify-center">
+                                <svg class="w-5 h-5 text-green-600 dark:text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
+                                </svg>
+                            </div>
+                            <div>
+                                <p class="text-sm font-bold text-gray-900 dark:text-white">Payout Received</p>
+                                <p class="text-xs text-gray-500 dark:text-gray-400">Oct 3, 2025 • 11:20 AM</p>
+                            </div>
+                        </div>
+                        <div class="text-right">
+                            <p class="text-base font-bold text-green-600 dark:text-green-500">+ ₹ 12,350</p>
+                            <p class="text-xs text-gray-500 dark:text-gray-400">To HDFC Bank</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Transaction 3 -->
+                <div class="px-5 py-4 border-b border-gray-200 dark:border-gray-700">
+                    <div class="flex items-center justify-between mb-2">
+                        <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 rounded-xl bg-orange-100 dark:bg-orange-900/30 flex items-center justify-center">
+                                <svg class="w-5 h-5 text-orange-600 dark:text-orange-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                                </svg>
+                            </div>
+                            <div>
+                                <p class="text-sm font-bold text-gray-900 dark:text-white">Payout Processing</p>
+                                <p class="text-xs text-gray-500 dark:text-gray-400">Initiated on Oct 12, 2025</p>
+                            </div>
+                        </div>
+                        <div class="text-right">
+                            <p class="text-base font-bold text-orange-600 dark:text-orange-500">₹ 5,230</p>
+                            <p class="text-xs text-gray-500 dark:text-gray-400">ETA: 2 days</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Transaction 4 -->
+                <div class="px-5 py-4 border-b border-gray-200 dark:border-gray-700">
+                    <div class="flex items-center justify-between mb-2">
+                        <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 rounded-xl bg-green-100 dark:bg-green-900/30 flex items-center justify-center">
+                                <svg class="w-5 h-5 text-green-600 dark:text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
+                                </svg>
+                            </div>
+                            <div>
+                                <p class="text-sm font-bold text-gray-900 dark:text-white">Payout Received</p>
+                                <p class="text-xs text-gray-500 dark:text-gray-400">Sep 26, 2025 • 2:15 PM</p>
+                            </div>
+                        </div>
+                        <div class="text-right">
+                            <p class="text-base font-bold text-green-600 dark:text-green-500">+ ₹ 9,870</p>
+                            <p class="text-xs text-gray-500 dark:text-gray-400">To HDFC Bank</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- View All Button -->
+                <button onclick="viewAllTransactions()" class="w-full py-3 text-center text-sm font-bold text-secondary hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors">
+                    View All Transactions
+                </button>
+
+            </div>
+        </div>
+
+        <!-- Info Card -->
+        <div class="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-2xl p-4">
+            <div class="flex items-start gap-2">
+                <svg class="w-5 h-5 text-blue-600 dark:text-blue-400 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                </svg>
+                <div>
+                    <h3 class="text-sm font-bold text-blue-900 dark:text-blue-300 mb-1">Payout Schedule</h3>
+                    <p class="text-xs text-blue-800 dark:text-blue-200">Payouts are processed every week. Funds typically reach your account within 2-3 business days. Minimum withdrawal amount is ₹500.</p>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Scripts -->
+    <script>
+        // Theme Toggle
+        const theme = localStorage.getItem('theme') || 'light';
+        if (theme === 'dark') {
+            document.documentElement.classList.add('dark');
+        }
+
+        function toggleTheme() {
+            const html = document.documentElement;
+            if (html.classList.contains('dark')) {
+                html.classList.remove('dark');
+                localStorage.setItem('theme', 'light');
+            } else {
+                html.classList.add('dark');
+                localStorage.setItem('theme', 'dark');
+            }
+        }
+
+        function requestPayout() {
+            alert('💰 Requesting Payout...\n\nAmount: ₹12,450\nEstimated delivery: 2-3 business days\n\nConfirm withdrawal?');
+            // In production, show confirmation modal and process
+        }
+
+        function addPayoutMethod() {
+            alert('➕ Add New Payout Method\n\nChoose:\n1. Bank Account\n2. UPI ID');
+            // In production, open modal with form
+        }
+
+        function editPayoutMethod(id) {
+            alert(`✏️ Edit Payout Method #${id}\n\nOpening editor...`);
+            // In production, open edit modal
+        }
+
+        function deletePayoutMethod(id) {
+            const confirmed = confirm('⚠️ Remove this payout method?\n\nYou can add it back anytime.');
+            if (confirmed) {
+                alert('✅ Payout method removed successfully!');
+            }
+        }
+
+        function setPrimaryPayout(id) {
+            alert('✅ Set as primary payout method!\n\nAll future payouts will be sent here.');
+            // In production, call API to update
+            location.reload();
+        }
+
+        function viewAllTransactions() {
+            alert('📜 Loading complete transaction history...');
+            // In production, navigate to detailed transaction history page
+        }
+    </script>
+
+</body>
+</html>
