@@ -23,3 +23,12 @@ def my_orders(request):
 
 def profile(request):
     return render(request, 'customer/profile.html')
+
+def manage_addresses(request):
+    return render(request, 'customer/manage_addresses.html')
+
+def payment_methods(request):
+    return render(request, 'customer/payment_methods.html')
+
+def help_support(request):
+    return render(request, 'customer/help_support.html')

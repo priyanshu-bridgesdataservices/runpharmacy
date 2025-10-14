@@ -241,7 +241,13 @@
             alert(`📱 Navigating to ${sectionNames[section]}...\n\n`);
             
             if (section === 'orders') {
-                // In production: window.location.href = 'my-orders.html';
+                window.location.href = "{% url 'customer:my_orders' %}";
+            } else if (section === 'addresses') {
+                window.location.href = "{% url 'customer:manage_addresses' %}";
+            } else if (section === 'payments') {
+                window.location.href = "{% url 'customer:payment_methods' %}";
+            } else if (section === 'help') {
+                window.location.href = "{% url 'customer:help_support' %}";
             }
         }
 

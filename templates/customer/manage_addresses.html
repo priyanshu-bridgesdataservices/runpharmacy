@@ -1,0 +1,315 @@
+<!-- templates/customer/manage_addresses.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manage Addresses - RunPharmacy</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#D92E7F',
+                        secondary: '#6B7FDB',
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-gray-50 dark:bg-gray-900 min-h-screen transition-colors duration-200 pb-6">
+    
+    <!-- Theme Toggle (Top Right) -->
+    <div class="fixed top-4 right-4 z-50">
+        <button onclick="toggleTheme()" class="p-2 rounded-full bg-white dark:bg-gray-800 shadow-lg">
+            <svg class="w-5 h-5 text-gray-800 dark:text-yellow-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path class="dark:hidden" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/>
+                <path class="hidden dark:block" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"/>
+            </svg>
+        </button>
+    </div>
+
+    <!-- Header -->
+    <div class="bg-white dark:bg-gray-800 shadow-sm border-b border-gray-200 dark:border-gray-700 px-4 py-4 sticky top-0 z-40">
+        <div class="flex items-center gap-3">
+            <!-- Back Button -->
+            <button onclick="history.back()" class="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-xl transition-colors">
+                <svg class="w-6 h-6 text-gray-700 dark:text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
+                </svg>
+            </button>
+            <div class="flex-1">
+                <h1 class="text-lg font-bold text-gray-900 dark:text-white">Manage Addresses</h1>
+                <p class="text-xs text-gray-500 dark:text-gray-400">Add or edit delivery addresses</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="px-4 py-6 space-y-4">
+        
+        <!-- Add New Address Button -->
+        <button onclick="showAddAddressModal()" class="w-full py-4 bg-gradient-to-r from-primary to-pink-600 text-white font-bold text-base rounded-2xl shadow-lg hover:shadow-xl transform hover:scale-[1.02] active:scale-[0.98] transition-all duration-200 flex items-center justify-center gap-2">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
+            </svg>
+            Add New Address
+        </button>
+
+        <!-- Saved Addresses List -->
+        <div class="space-y-3">
+            
+            <!-- Address Card 1 (Default) -->
+            <div class="bg-white dark:bg-gray-800 border-2 border-primary dark:border-primary rounded-2xl p-5 shadow-md relative">
+                <div class="absolute top-3 right-3">
+                    <span class="bg-primary text-white text-xs font-bold px-3 py-1 rounded-full">DEFAULT</span>
+                </div>
+                
+                <div class="mb-4 pr-20">
+                    <div class="flex items-center gap-2 mb-2">
+                        <svg class="w-5 h-5 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/>
+                        </svg>
+                        <span class="text-base font-bold text-gray-900 dark:text-white">Home</span>
+                    </div>
+                    <p class="text-sm font-semibold text-gray-900 dark:text-white mb-1">Priya Sen</p>
+                    <p class="text-sm text-gray-700 dark:text-gray-300 mb-1">45, Park Street, Kolkata - 700016</p>
+                    <p class="text-sm text-gray-600 dark:text-gray-400">West Bengal, India</p>
+                    <p class="text-sm text-gray-600 dark:text-gray-400 mt-2">📞 +91 9876543210</p>
+                </div>
+
+                <div class="flex gap-2">
+                    <button onclick="editAddress(1)" class="flex-1 py-2 bg-white dark:bg-gray-700 border-2 border-gray-200 dark:border-gray-600 text-gray-700 dark:text-gray-300 font-bold text-sm rounded-xl hover:bg-gray-50 dark:hover:bg-gray-600 transition-all">
+                        Edit
+                    </button>
+                    <button onclick="deleteAddress(1)" class="flex-1 py-2 bg-red-50 dark:bg-red-900/20 border-2 border-red-200 dark:border-red-800 text-red-600 dark:text-red-400 font-bold text-sm rounded-xl hover:bg-red-100 dark:hover:bg-red-900/30 transition-all">
+                        Delete
+                    </button>
+                </div>
+            </div>
+
+            <!-- Address Card 2 -->
+            <div class="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-2xl p-5 shadow-md">
+                <div class="mb-4">
+                    <div class="flex items-center gap-2 mb-2">
+                        <svg class="w-5 h-5 text-gray-600 dark:text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+                        </svg>
+                        <span class="text-base font-bold text-gray-900 dark:text-white">Office</span>
+                    </div>
+                    <p class="text-sm font-semibold text-gray-900 dark:text-white mb-1">Priya Sen</p>
+                    <p class="text-sm text-gray-700 dark:text-gray-300 mb-1">Tech Tower, 12th Floor, Salt Lake Sector V</p>
+                    <p class="text-sm text-gray-600 dark:text-gray-400">Kolkata - 700091, West Bengal, India</p>
+                    <p class="text-sm text-gray-600 dark:text-gray-400 mt-2">📞 +91 9876543210</p>
+                </div>
+
+                <div class="flex gap-2">
+                    <button onclick="setDefault(2)" class="flex-1 py-2 bg-secondary/10 dark:bg-secondary/20 border-2 border-secondary dark:border-secondary text-secondary dark:text-secondary font-bold text-sm rounded-xl hover:bg-secondary/20 dark:hover:bg-secondary/30 transition-all">
+                        Set as Default
+                    </button>
+                    <button onclick="editAddress(2)" class="px-4 py-2 bg-white dark:bg-gray-700 border-2 border-gray-200 dark:border-gray-600 text-gray-700 dark:text-gray-300 font-bold text-sm rounded-xl hover:bg-gray-50 dark:hover:bg-gray-600 transition-all">
+                        Edit
+                    </button>
+                    <button onclick="deleteAddress(2)" class="px-4 py-2 bg-red-50 dark:bg-red-900/20 border-2 border-red-200 dark:border-red-800 text-red-600 dark:text-red-400 font-bold text-sm rounded-xl hover:bg-red-100 dark:hover:bg-red-900/30 transition-all">
+                        Delete
+                    </button>
+                </div>
+            </div>
+
+            <!-- Address Card 3 -->
+            <div class="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-2xl p-5 shadow-md">
+                <div class="mb-4">
+                    <div class="flex items-center gap-2 mb-2">
+                        <svg class="w-5 h-5 text-gray-600 dark:text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
+                        </svg>
+                        <span class="text-base font-bold text-gray-900 dark:text-white">Other</span>
+                    </div>
+                    <p class="text-sm font-semibold text-gray-900 dark:text-white mb-1">Priya Sen</p>
+                    <p class="text-sm text-gray-700 dark:text-gray-300 mb-1">23/B, Southern Avenue, Ballygunge</p>
+                    <p class="text-sm text-gray-600 dark:text-gray-400">Kolkata - 700029, West Bengal, India</p>
+                    <p class="text-sm text-gray-600 dark:text-gray-400 mt-2">📞 +91 9876543210</p>
+                </div>
+
+                <div class="flex gap-2">
+                    <button onclick="setDefault(3)" class="flex-1 py-2 bg-secondary/10 dark:bg-secondary/20 border-2 border-secondary dark:border-secondary text-secondary dark:text-secondary font-bold text-sm rounded-xl hover:bg-secondary/20 dark:hover:bg-secondary/30 transition-all">
+                        Set as Default
+                    </button>
+                    <button onclick="editAddress(3)" class="px-4 py-2 bg-white dark:bg-gray-700 border-2 border-gray-200 dark:border-gray-600 text-gray-700 dark:text-gray-300 font-bold text-sm rounded-xl hover:bg-gray-50 dark:hover:bg-gray-600 transition-all">
+                        Edit
+                    </button>
+                    <button onclick="deleteAddress(3)" class="px-4 py-2 bg-red-50 dark:bg-red-900/20 border-2 border-red-200 dark:border-red-800 text-red-600 dark:text-red-400 font-bold text-sm rounded-xl hover:bg-red-100 dark:hover:bg-red-900/30 transition-all">
+                        Delete
+                    </button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Add/Edit Address Modal -->
+    <div id="addressModal" class="fixed inset-0 bg-black/50 z-50 hidden flex items-end justify-center">
+        <div class="bg-white dark:bg-gray-800 rounded-t-3xl shadow-2xl p-6 w-full max-w-md max-h-[90vh] overflow-y-auto">
+            <div class="flex items-center justify-between mb-6">
+                <h2 class="text-xl font-bold text-gray-900 dark:text-white" id="modalTitle">Add New Address</h2>
+                <button onclick="closeAddressModal()" class="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-xl transition-colors">
+                    <svg class="w-6 h-6 text-gray-700 dark:text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                    </svg>
+                </button>
+            </div>
+
+            <form class="space-y-4">
+                <!-- Address Type -->
+                <div>
+                    <label class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">Address Type</label>
+                    <div class="flex gap-2">
+                        <button type="button" onclick="selectAddressType('home')" id="typeHome" class="flex-1 py-3 bg-primary text-white font-bold text-sm rounded-xl transition-all">
+                            🏠 Home
+                        </button>
+                        <button type="button" onclick="selectAddressType('office')" id="typeOffice" class="flex-1 py-3 bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 font-bold text-sm rounded-xl transition-all">
+                            💼 Office
+                        </button>
+                        <button type="button" onclick="selectAddressType('other')" id="typeOther" class="flex-1 py-3 bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 font-bold text-sm rounded-xl transition-all">
+                            📍 Other
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Full Name -->
+                <div>
+                    <label class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">Full Name</label>
+                    <input type="text" placeholder="Enter full name" class="w-full px-4 py-3 bg-gray-50 dark:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded-xl text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all">
+                </div>
+
+                <!-- Mobile Number -->
+                <div>
+                    <label class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">Mobile Number</label>
+                    <div class="relative">
+                        <span class="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500 dark:text-gray-400 font-semibold">+91</span>
+                        <input type="tel" maxlength="10" placeholder="Enter mobile number" class="w-full pl-14 pr-4 py-3 bg-gray-50 dark:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded-xl text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all">
+                    </div>
+                </div>
+
+                <!-- Address Line 1 -->
+                <div>
+                    <label class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">Address Line 1</label>
+                    <input type="text" placeholder="House No., Building Name" class="w-full px-4 py-3 bg-gray-50 dark:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded-xl text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all">
+                </div>
+
+                <!-- Address Line 2 -->
+                <div>
+                    <label class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">Address Line 2</label>
+                    <input type="text" placeholder="Road Name, Area, Colony" class="w-full px-4 py-3 bg-gray-50 dark:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded-xl text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all">
+                </div>
+
+                <!-- City & Pincode -->
+                <div class="grid grid-cols-2 gap-3">
+                    <div>
+                        <label class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">City</label>
+                        <input type="text" placeholder="City" class="w-full px-4 py-3 bg-gray-50 dark:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded-xl text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">Pincode</label>
+                        <input type="text" maxlength="6" placeholder="Pincode" class="w-full px-4 py-3 bg-gray-50 dark:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded-xl text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all">
+                    </div>
+                </div>
+
+                <!-- State -->
+                <div>
+                    <label class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">State</label>
+                    <input type="text" placeholder="State" class="w-full px-4 py-3 bg-gray-50 dark:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded-xl text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all">
+                </div>
+
+                <!-- Save Button -->
+                <button type="button" onclick="saveAddress()" class="w-full py-4 bg-gradient-to-r from-green-500 to-green-600 text-white font-bold text-base rounded-2xl shadow-lg hover:shadow-xl transform hover:scale-[1.02] active:scale-[0.98] transition-all duration-200 mt-6">
+                    Save Address
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script>
+        // Theme Toggle
+        const theme = localStorage.getItem('theme') || 'light';
+        if (theme === 'dark') {
+            document.documentElement.classList.add('dark');
+        }
+
+        function toggleTheme() {
+            const html = document.documentElement;
+            if (html.classList.contains('dark')) {
+                html.classList.remove('dark');
+                localStorage.setItem('theme', 'light');
+            } else {
+                html.classList.add('dark');
+                localStorage.setItem('theme', 'dark');
+            }
+        }
+
+        let selectedType = 'home';
+
+        function selectAddressType(type) {
+            selectedType = type;
+            // Reset all buttons
+            document.getElementById('typeHome').className = 'flex-1 py-3 bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 font-bold text-sm rounded-xl transition-all';
+            document.getElementById('typeOffice').className = 'flex-1 py-3 bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 font-bold text-sm rounded-xl transition-all';
+            document.getElementById('typeOther').className = 'flex-1 py-3 bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 font-bold text-sm rounded-xl transition-all';
+            
+            // Highlight selected
+            if (type === 'home') {
+                document.getElementById('typeHome').className = 'flex-1 py-3 bg-primary text-white font-bold text-sm rounded-xl transition-all';
+            } else if (type === 'office') {
+                document.getElementById('typeOffice').className = 'flex-1 py-3 bg-primary text-white font-bold text-sm rounded-xl transition-all';
+            } else {
+                document.getElementById('typeOther').className = 'flex-1 py-3 bg-primary text-white font-bold text-sm rounded-xl transition-all';
+            }
+        }
+
+        function showAddAddressModal() {
+            document.getElementById('modalTitle').textContent = 'Add New Address';
+            document.getElementById('addressModal').classList.remove('hidden');
+            document.getElementById('addressModal').classList.add('flex');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeAddressModal() {
+            document.getElementById('addressModal').classList.add('hidden');
+            document.getElementById('addressModal').classList.remove('flex');
+            document.body.style.overflow = 'auto';
+        }
+
+        function editAddress(id) {
+            document.getElementById('modalTitle').textContent = 'Edit Address';
+            showAddAddressModal();
+            // In production, populate form with address data
+        }
+
+        function deleteAddress(id) {
+            const confirmed = confirm('⚠️ Are you sure you want to delete this address?\n\nThis action cannot be undone.');
+            if (confirmed) {
+                alert('✅ Address deleted successfully!');
+                // In production, call API to delete
+            }
+        }
+
+        function setDefault(id) {
+            alert('✅ Address set as default!');
+            // In production, call API to update default address
+            location.reload();
+        }
+
+        function saveAddress() {
+            alert('✅ Address saved successfully!');
+            closeAddressModal();
+            // In production, validate and call API to save
+        }
+    </script>
+
+</body>
+</html>

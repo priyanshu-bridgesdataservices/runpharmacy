@@ -13,4 +13,7 @@ urlpatterns = [
     path('order-tracking/', views.order_tracking, name='order_tracking'),
     path('my-orders/', views.my_orders, name='my_orders'),
     path('profile/', views.profile, name='profile'),
+    path('manage-addresses/', views.manage_addresses, name='manage_addresses'),
+    path('payment-methods/', views.payment_methods, name='payment_methods'),
+    path('help-support/', views.help_support, name='help_support'),
 ]

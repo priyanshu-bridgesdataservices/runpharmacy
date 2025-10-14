@@ -1,0 +1,413 @@
+<!-- templates/customer/payment_methods.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payment Methods - RunPharmacy</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#D92E7F',
+                        secondary: '#6B7FDB',
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-gray-50 dark:bg-gray-900 min-h-screen transition-colors duration-200 pb-6">
+    
+    <!-- Theme Toggle (Top Right) -->
+    <div class="fixed top-4 right-4 z-50">
+        <button onclick="toggleTheme()" class="p-2 rounded-full bg-white dark:bg-gray-800 shadow-lg">
+            <svg class="w-5 h-5 text-gray-800 dark:text-yellow-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path class="dark:hidden" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/>
+                <path class="hidden dark:block" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"/>
+            </svg>
+        </button>
+    </div>
+
+    <!-- Header -->
+    <div class="bg-white dark:bg-gray-800 shadow-sm border-b border-gray-200 dark:border-gray-700 px-4 py-4 sticky top-0 z-40">
+        <div class="flex items-center gap-3">
+            <!-- Back Button -->
+            <button onclick="history.back()" class="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-xl transition-colors">
+                <svg class="w-6 h-6 text-gray-700 dark:text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
+                </svg>
+            </button>
+            <div class="flex-1">
+                <h1 class="text-lg font-bold text-gray-900 dark:text-white">Payment Methods</h1>
+                <p class="text-xs text-gray-500 dark:text-gray-400">Manage your saved payment methods</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="px-4 py-6 space-y-6">
+        
+        <!-- Add New Payment Button -->
+        <button onclick="showAddPaymentModal()" class="w-full py-4 bg-gradient-to-r from-primary to-pink-600 text-white font-bold text-base rounded-2xl shadow-lg hover:shadow-xl transform hover:scale-[1.02] active:scale-[0.98] transition-all duration-200 flex items-center justify-center gap-2">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
+            </svg>
+            Add Payment Method
+        </button>
+
+        <!-- UPI Section -->
+        <div>
+            <h2 class="text-base font-bold text-gray-900 dark:text-white mb-3 flex items-center gap-2">
+                <svg class="w-5 h-5 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                </svg>
+                UPI
+            </h2>
+
+            <!-- UPI Card (Default) -->
+            <div class="bg-white dark:bg-gray-800 border-2 border-primary dark:border-primary rounded-2xl p-5 shadow-md relative mb-3">
+                <div class="absolute top-3 right-3">
+                    <span class="bg-primary text-white text-xs font-bold px-3 py-1 rounded-full">DEFAULT</span>
+                </div>
+
+                <div class="flex items-center gap-4 mb-4">
+                    <div class="w-12 h-12 rounded-xl bg-purple-100 dark:bg-purple-900/30 flex items-center justify-center">
+                        <svg class="w-7 h-7 text-purple-600 dark:text-purple-400" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M12 2L2 7v10c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V7l-10-5z"/>
+                        </svg>
+                    </div>
+                    <div class="flex-1">
+                        <p class="text-base font-bold text-gray-900 dark:text-white">priya@paytm</p>
+                        <p class="text-sm text-gray-600 dark:text-gray-400">Paytm UPI</p>
+                    </div>
+                </div>
+
+                <div class="flex gap-2">
+                    <button onclick="deletePayment('upi', 1)" class="flex-1 py-2 bg-red-50 dark:bg-red-900/20 border-2 border-red-200 dark:border-red-800 text-red-600 dark:text-red-400 font-bold text-sm rounded-xl hover:bg-red-100 dark:hover:bg-red-900/30 transition-all">
+                        Remove
+                    </button>
+                </div>
+            </div>
+
+            <!-- Add UPI Button -->
+            <button onclick="showAddUPIModal()" class="w-full py-3 bg-white dark:bg-gray-800 border-2 border-dashed border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 font-bold text-sm rounded-xl hover:border-primary dark:hover:border-primary hover:text-primary dark:hover:text-primary transition-all flex items-center justify-center gap-2">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
+                </svg>
+                Add UPI ID
+            </button>
+        </div>
+
+        <!-- Cards Section -->
+        <div>
+            <h2 class="text-base font-bold text-gray-900 dark:text-white mb-3 flex items-center gap-2">
+                <svg class="w-5 h-5 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"/>
+                </svg>
+                Credit / Debit Cards
+            </h2>
+
+            <!-- Credit Card -->
+            <div class="bg-gradient-to-br from-blue-500 to-blue-600 rounded-2xl p-5 shadow-lg mb-3 text-white">
+                <div class="flex items-center justify-between mb-6">
+                    <div class="text-xs font-bold opacity-80">HDFC Bank</div>
+                    <div class="w-10 h-8 bg-white/20 rounded backdrop-blur-sm flex items-center justify-center">
+                        <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M7 16h10v2H7zm0-4h10v2H7zm0-4h10v2H7z"/>
+                        </svg>
+                    </div>
+                </div>
+
+                <div class="mb-6">
+                    <div class="text-xl font-bold tracking-wider mb-1">•••• •••• •••• 4532</div>
+                    <div class="text-xs opacity-80">CREDIT CARD</div>
+                </div>
+
+                <div class="flex items-center justify-between">
+                    <div>
+                        <div class="text-xs opacity-80 mb-1">PRIYA SEN</div>
+                    </div>
+                    <div>
+                        <div class="text-xs opacity-80 mb-1">VALID TILL</div>
+                        <div class="text-sm font-bold">12/28</div>
+                    </div>
+                </div>
+
+                <div class="mt-4 flex gap-2">
+                    <button onclick="setDefaultCard(1)" class="flex-1 py-2 bg-white/20 hover:bg-white/30 backdrop-blur-sm font-bold text-xs rounded-lg transition-all">
+                        Set Default
+                    </button>
+                    <button onclick="deletePayment('card', 1)" class="px-4 py-2 bg-red-500/80 hover:bg-red-600 font-bold text-xs rounded-lg transition-all">
+                        Remove
+                    </button>
+                </div>
+            </div>
+
+            <!-- Debit Card -->
+            <div class="bg-gradient-to-br from-purple-500 to-pink-500 rounded-2xl p-5 shadow-lg mb-3 text-white">
+                <div class="flex items-center justify-between mb-6">
+                    <div class="text-xs font-bold opacity-80">ICICI Bank</div>
+                    <div class="w-10 h-8 bg-white/20 rounded backdrop-blur-sm flex items-center justify-center">
+                        <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M20 8H4V6h16v2zm0 2H4v6h16v-6zm0 8H4v2h16v-2z"/>
+                        </svg>
+                    </div>
+                </div>
+
+                <div class="mb-6">
+                    <div class="text-xl font-bold tracking-wider mb-1">•••• •••• •••• 8765</div>
+                    <div class="text-xs opacity-80">DEBIT CARD</div>
+                </div>
+
+                <div class="flex items-center justify-between">
+                    <div>
+                        <div class="text-xs opacity-80 mb-1">PRIYA SEN</div>
+                    </div>
+                    <div>
+                        <div class="text-xs opacity-80 mb-1">VALID TILL</div>
+                        <div class="text-sm font-bold">06/27</div>
+                    </div>
+                </div>
+
+                <div class="mt-4 flex gap-2">
+                    <button onclick="setDefaultCard(2)" class="flex-1 py-2 bg-white/20 hover:bg-white/30 backdrop-blur-sm font-bold text-xs rounded-lg transition-all">
+                        Set Default
+                    </button>
+                    <button onclick="deletePayment('card', 2)" class="px-4 py-2 bg-red-500/80 hover:bg-red-600 font-bold text-xs rounded-lg transition-all">
+                        Remove
+                    </button>
+                </div>
+            </div>
+
+            <!-- Add Card Button -->
+            <button onclick="showAddCardModal()" class="w-full py-3 bg-white dark:bg-gray-800 border-2 border-dashed border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 font-bold text-sm rounded-xl hover:border-primary dark:hover:border-primary hover:text-primary dark:hover:text-primary transition-all flex items-center justify-center gap-2">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
+                </svg>
+                Add New Card
+            </button>
+        </div>
+
+        <!-- Wallets Section -->
+        <div>
+            <h2 class="text-base font-bold text-gray-900 dark:text-white mb-3 flex items-center gap-2">
+                <svg class="w-5 h-5 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z"/>
+                </svg>
+                Wallets
+            </h2>
+
+            <div class="space-y-3">
+                <!-- Paytm Wallet -->
+                <div class="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-2xl p-4 shadow-md">
+                    <div class="flex items-center gap-3">
+                        <div class="w-12 h-12 rounded-xl bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center">
+                            <span class="text-xl">💳</span>
+                        </div>
+                        <div class="flex-1">
+                            <p class="text-base font-bold text-gray-900 dark:text-white">Paytm Wallet</p>
+                            <p class="text-sm text-gray-600 dark:text-gray-400">+91 9876543210</p>
+                        </div>
+                        <button onclick="removeWallet('paytm')" class="p-2 bg-red-50 dark:bg-red-900/20 rounded-lg text-red-600 dark:text-red-400">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- PhonePe Wallet -->
+                <div class="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-2xl p-4 shadow-md">
+                    <div class="flex items-center gap-3">
+                        <div class="w-12 h-12 rounded-xl bg-purple-100 dark:bg-purple-900/30 flex items-center justify-center">
+                            <span class="text-xl">📱</span>
+                        </div>
+                        <div class="flex-1">
+                            <p class="text-base font-bold text-gray-900 dark:text-white">PhonePe</p>
+                            <p class="text-sm text-gray-600 dark:text-gray-400">+91 9876543210</p>
+                        </div>
+                        <button onclick="removeWallet('phonepe')" class="p-2 bg-red-50 dark:bg-red-900/20 rounded-lg text-red-600 dark:text-red-400">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Info Card -->
+        <div class="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-2xl p-4">
+            <div class="flex items-start gap-2">
+                <svg class="w-5 h-5 text-blue-600 dark:text-blue-400 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/>
+                </svg>
+                <div>
+                    <h3 class="text-sm font-bold text-blue-900 dark:text-blue-300 mb-1">Your data is secure</h3>
+                    <p class="text-xs text-blue-800 dark:text-blue-200">All payment information is encrypted and stored securely. We never share your financial details.</p>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Add UPI Modal -->
+    <div id="upiModal" class="fixed inset-0 bg-black/50 z-50 hidden flex items-end justify-center">
+        <div class="bg-white dark:bg-gray-800 rounded-t-3xl shadow-2xl p-6 w-full max-w-md">
+            <div class="flex items-center justify-between mb-6">
+                <h2 class="text-xl font-bold text-gray-900 dark:text-white">Add UPI ID</h2>
+                <button onclick="closeUPIModal()" class="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-xl transition-colors">
+                    <svg class="w-6 h-6 text-gray-700 dark:text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                    </svg>
+                </button>
+            </div>
+
+            <form class="space-y-4">
+                <div>
+                    <label class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">UPI ID</label>
+                    <input type="text" placeholder="yourname@paytm" class="w-full px-4 py-3 bg-gray-50 dark:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded-xl text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all">
+                    <p class="text-xs text-gray-500 dark:text-gray-400 mt-2">e.g., 9876543210@paytm or yourname@upi</p>
+                </div>
+
+                <button type="button" onclick="verifyAndSaveUPI()" class="w-full py-4 bg-gradient-to-r from-green-500 to-green-600 text-white font-bold text-base rounded-2xl shadow-lg hover:shadow-xl transform hover:scale-[1.02] active:scale-[0.98] transition-all duration-200">
+                    Verify & Add
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Add Card Modal -->
+    <div id="cardModal" class="fixed inset-0 bg-black/50 z-50 hidden flex items-end justify-center">
+        <div class="bg-white dark:bg-gray-800 rounded-t-3xl shadow-2xl p-6 w-full max-w-md max-h-[90vh] overflow-y-auto">
+            <div class="flex items-center justify-between mb-6">
+                <h2 class="text-xl font-bold text-gray-900 dark:text-white">Add Card</h2>
+                <button onclick="closeCardModal()" class="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-xl transition-colors">
+                    <svg class="w-6 h-6 text-gray-700 dark:text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                    </svg>
+                </button>
+            </div>
+
+            <form class="space-y-4">
+                <div>
+                    <label class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">Card Number</label>
+                    <input type="text" maxlength="19" placeholder="1234 5678 9012 3456" class="w-full px-4 py-3 bg-gray-50 dark:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded-xl text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all">
+                </div>
+
+                <div>
+                    <label class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">Cardholder Name</label>
+                    <input type="text" placeholder="Name on card" class="w-full px-4 py-3 bg-gray-50 dark:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded-xl text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all">
+                </div>
+
+                <div class="grid grid-cols-2 gap-3">
+                    <div>
+                        <label class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">Expiry Date</label>
+                        <input type="text" placeholder="MM/YY" maxlength="5" class="w-full px-4 py-3 bg-gray-50 dark:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded-xl text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">CVV</label>
+                        <input type="password" placeholder="123" maxlength="3" class="w-full px-4 py-3 bg-gray-50 dark:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded-xl text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all">
+                    </div>
+                </div>
+
+                <div class="flex items-center gap-2">
+                    <input type="checkbox" id="saveCard" class="w-4 h-4 text-primary border-gray-300 rounded focus:ring-primary">
+                    <label for="saveCard" class="text-sm text-gray-700 dark:text-gray-300">Save this card for future payments</label>
+                </div>
+
+                <button type="button" onclick="verifyAndSaveCard()" class="w-full py-4 bg-gradient-to-r from-green-500 to-green-600 text-white font-bold text-base rounded-2xl shadow-lg hover:shadow-xl transform hover:scale-[1.02] active:scale-[0.98] transition-all duration-200 mt-6">
+                    Add Card
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script>
+        // Theme Toggle
+        const theme = localStorage.getItem('theme') || 'light';
+        if (theme === 'dark') {
+            document.documentElement.classList.add('dark');
+        }
+
+        function toggleTheme() {
+            const html = document.documentElement;
+            if (html.classList.contains('dark')) {
+                html.classList.remove('dark');
+                localStorage.setItem('theme', 'light');
+            } else {
+                html.classList.add('dark');
+                localStorage.setItem('theme', 'dark');
+            }
+        }
+
+        function showAddPaymentModal() {
+            alert('💳 Choose payment method to add:\n\n1. UPI\n2. Credit/Debit Card\n3. Wallet');
+        }
+
+        function showAddUPIModal() {
+            document.getElementById('upiModal').classList.remove('hidden');
+            document.getElementById('upiModal').classList.add('flex');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeUPIModal() {
+            document.getElementById('upiModal').classList.add('hidden');
+            document.getElementById('upiModal').classList.remove('flex');
+            document.body.style.overflow = 'auto';
+        }
+
+        function showAddCardModal() {
+            document.getElementById('cardModal').classList.remove('hidden');
+            document.getElementById('cardModal').classList.add('flex');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeCardModal() {
+            document.getElementById('cardModal').classList.add('hidden');
+            document.getElementById('cardModal').classList.remove('flex');
+            document.body.style.overflow = 'auto';
+        }
+
+        function verifyAndSaveUPI() {
+            alert('✅ UPI ID verified and added successfully!');
+            closeUPIModal();
+            // In production, validate UPI and call API
+        }
+
+        function verifyAndSaveCard() {
+            alert('✅ Card added successfully!');
+            closeCardModal();
+            // In production, validate card details and call API
+        }
+
+        function deletePayment(type, id) {
+            const confirmed = confirm('⚠️ Are you sure you want to remove this payment method?');
+            if (confirmed) {
+                alert('✅ Payment method removed successfully!');
+                // In production, call API to delete
+            }
+        }
+
+        function setDefaultCard(id) {
+            alert('✅ Card set as default!');
+            // In production, call API to update default
+            location.reload();
+        }
+
+        function removeWallet(name) {
+            const confirmed = confirm(`⚠️ Remove ${name} wallet?`);
+            if (confirmed) {
+                alert('✅ Wallet removed successfully!');
+                // In production, call API to delete
+            }
+        }
+    </script>
+
+</body>
+</html>
