@@ -58,15 +58,50 @@
                 </div>
             </div>
             
-            <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-2">Sending Your Request</h2>
+            <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-2">Finding Best Prices</h2>
             <p class="text-gray-600 dark:text-gray-400 mb-6">Broadcasting to <span class="font-bold text-primary">12 pharmacies</span> near you...</p>
             
             <!-- Progress Bar -->
             <div class="w-full h-2 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden mb-4">
-                <div class="h-full bg-gradient-to-r from-primary to-secondary rounded-full animate-pulse" style="width: 60%"></div>
+                <div id="progressBar" class="h-full bg-gradient-to-r from-primary to-secondary rounded-full transition-all duration-500" style="width: 10%"></div>
             </div>
             
-            <p class="text-sm text-gray-500 dark:text-gray-400">⏱️ Quotes will start arriving in seconds</p>
+            <p id="loadingText" class="text-sm text-gray-500 dark:text-gray-400">⏱️ Quotes will start arriving in seconds...</p>
+        </div>
+    </div>
+
+    <!-- Order Summary (Shows selected medicines or prescription info) -->
+    <div id="orderSummary" class="hidden px-4 pt-6 pb-3">
+        <div class="bg-white dark:bg-gray-800 rounded-2xl p-4 shadow-md border border-gray-200 dark:border-gray-700 mb-4">
+            <div class="flex items-center justify-between mb-3">
+                <h3 class="text-sm font-bold text-gray-900 dark:text-white flex items-center gap-2">
+                    <svg class="w-4 h-4 text-primary" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M19 7h-3V6a4 4 0 00-8 0v1H5a1 1 0 00-1 1v11a3 3 0 003 3h10a3 3 0 003-3V8a1 1 0 00-1-1zm-9-1a2 2 0 114 0v1h-4V6z"/>
+                    </svg>
+                    <span id="orderTypeLabel">Your Order</span>
+                </h3>
+                <button onclick="toggleOrderDetails()" class="text-xs text-primary font-semibold">
+                    <span id="toggleText">Show Details</span>
+                </button>
+            </div>
+            
+            <!-- Medicines List (expandable) -->
+            <div id="orderDetails" class="hidden">
+                <div id="medicinesList" class="space-y-2 mb-3">
+                    <!-- Medicines will be populated by JavaScript -->
+                </div>
+                <div class="pt-3 border-t border-gray-200 dark:border-gray-700">
+                    <p class="text-xs text-gray-500 dark:text-gray-400">
+                        💡 <span class="text-green-600 dark:text-green-400 font-semibold">Generic alternatives</span> will be suggested by pharmacies for better savings!
+                    </p>
+                </div>
+            </div>
+            
+            <!-- Summary Line -->
+            <div id="orderSummaryLine" class="flex items-center justify-between text-sm">
+                <span class="text-gray-600 dark:text-gray-400" id="itemCountText">3 items requested</span>
+                <span class="text-gray-500 dark:text-gray-400">Awaiting pharmacy quotes</span>
+            </div>
         </div>
     </div>
 
@@ -91,169 +126,21 @@
 
     <!-- Quotes List -->
     <div id="quotesList" class="hidden px-4 pb-6 space-y-4">
-        
-        <!-- Quote Card 1 - Lowest Price -->
-        <div class="bg-white dark:bg-gray-800 border-2 border-green-500 dark:border-green-600 rounded-2xl p-5 shadow-lg relative quote-card" data-price="910" data-distance="1.4">
-            <div class="absolute -top-3 left-4 bg-green-500 text-white text-xs font-bold px-3 py-1 rounded-full shadow-md">
-                BEST PRICE 🏆
-            </div>
-            
-            <div class="flex items-start justify-between mb-4 mt-2">
-                <div class="flex-1">
-                    <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-1">Frank Ross Pharmacy</h3>
-                    <div class="flex items-center gap-2 mb-2">
-                        <div class="flex items-center gap-1">
-                            <span class="text-yellow-500">⭐</span>
-                            <span class="text-sm font-bold text-gray-900 dark:text-white">4.7</span>
-                            <span class="text-xs text-gray-500 dark:text-gray-400">(120)</span>
-                        </div>
-                    </div>
-                    <div class="flex items-center gap-1 text-sm text-gray-600 dark:text-gray-400">
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
-                        </svg>
-                        <span class="font-medium">1.4 km • Ballygunge</span>
-                    </div>
-                </div>
-                <div class="text-right">
-                    <p class="text-3xl font-bold text-green-600 dark:text-green-500">₹910</p>
-                    <p class="text-xs text-gray-500 dark:text-gray-400">Total</p>
-                </div>
-            </div>
-            
-            <button onclick="selectQuote('Frank Ross Pharmacy', 910)" class="w-full py-3 bg-green-500 hover:bg-green-600 text-white font-bold rounded-xl transition-all flex items-center justify-center gap-2 shadow-md">
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
-                </svg>
-                SELECT
-            </button>
-        </div>
+        <!-- Quote cards will be dynamically inserted here -->
+    </div>
 
-        <!-- Quote Card 2 -->
-        <div class="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-2xl p-5 shadow-md quote-card" data-price="945" data-distance="0.8">
-            <div class="flex items-start justify-between mb-4">
-                <div class="flex-1">
-                    <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-1">Apollo Pharmacy</h3>
-                    <div class="flex items-center gap-2 mb-2">
-                        <div class="flex items-center gap-1">
-                            <span class="text-yellow-500">⭐</span>
-                            <span class="text-sm font-bold text-gray-900 dark:text-white">4.8</span>
-                            <span class="text-xs text-gray-500 dark:text-gray-400">(200)</span>
-                        </div>
-                    </div>
-                    <div class="flex items-center gap-1 text-sm text-gray-600 dark:text-gray-400">
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
-                        </svg>
-                        <span class="font-medium">0.8 km • Park Street</span>
-                    </div>
-                </div>
-                <div class="text-right">
-                    <p class="text-3xl font-bold text-primary">₹945</p>
-                    <p class="text-xs text-gray-500 dark:text-gray-400">Total</p>
-                </div>
-            </div>
-            
-            <button onclick="selectQuote('Apollo Pharmacy', 945)" class="w-full py-3 bg-primary hover:bg-pink-600 text-white font-bold rounded-xl transition-all shadow-md">
-                SELECT
-            </button>
+    <!-- New Quote Notification Toast -->
+    <div id="newQuoteToast" class="fixed top-20 left-4 right-4 bg-green-500 text-white px-4 py-3 rounded-xl shadow-2xl transform -translate-y-full opacity-0 transition-all duration-300 z-50 flex items-center gap-3">
+        <div class="w-8 h-8 bg-white/20 rounded-full flex items-center justify-center animate-pulse">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/>
+            </svg>
         </div>
-
-        <!-- Quote Card 3 -->
-        <div class="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-2xl p-5 shadow-md quote-card" data-price="980" data-distance="2.1">
-            <div class="flex items-start justify-between mb-4">
-                <div class="flex-1">
-                    <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-1">MedPlus Pharmacy</h3>
-                    <div class="flex items-center gap-2 mb-2">
-                        <div class="flex items-center gap-1">
-                            <span class="text-yellow-500">⭐</span>
-                            <span class="text-sm font-bold text-gray-900 dark:text-white">4.5</span>
-                            <span class="text-xs text-gray-500 dark:text-gray-400">(85)</span>
-                        </div>
-                    </div>
-                    <div class="flex items-center gap-1 text-sm text-gray-600 dark:text-gray-400">
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
-                        </svg>
-                        <span class="font-medium">2.1 km • Gariahat</span>
-                    </div>
-                </div>
-                <div class="text-right">
-                    <p class="text-3xl font-bold text-primary">₹980</p>
-                    <p class="text-xs text-gray-500 dark:text-gray-400">Total</p>
-                </div>
-            </div>
-            
-            <button onclick="selectQuote('MedPlus Pharmacy', 980)" class="w-full py-3 bg-primary hover:bg-pink-600 text-white font-bold rounded-xl transition-all shadow-md">
-                SELECT
-            </button>
+        <div class="flex-1">
+            <p class="font-bold text-sm" id="toastPharmacyName">New Quote!</p>
+            <p class="text-xs text-white/90" id="toastQuotePrice">₹XXX</p>
         </div>
-
-        <!-- Quote Card 4 -->
-        <div class="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-2xl p-5 shadow-md quote-card" data-price="1020" data-distance="1.6">
-            <div class="flex items-start justify-between mb-4">
-                <div class="flex-1">
-                    <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-1">HealthPlus Medical Store</h3>
-                    <div class="flex items-center gap-2 mb-2">
-                        <div class="flex items-center gap-1">
-                            <span class="text-yellow-500">⭐</span>
-                            <span class="text-sm font-bold text-gray-900 dark:text-white">4.6</span>
-                            <span class="text-xs text-gray-500 dark:text-gray-400">(95)</span>
-                        </div>
-                    </div>
-                    <div class="flex items-center gap-1 text-sm text-gray-600 dark:text-gray-400">
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
-                        </svg>
-                        <span class="font-medium">1.6 km • Rashbehari</span>
-                    </div>
-                </div>
-                <div class="text-right">
-                    <p class="text-3xl font-bold text-primary">₹1020</p>
-                    <p class="text-xs text-gray-500 dark:text-gray-400">Total</p>
-                </div>
-            </div>
-            
-            <button onclick="selectQuote('HealthPlus Medical Store', 1020)" class="w-full py-3 bg-primary hover:bg-pink-600 text-white font-bold rounded-xl transition-all shadow-md">
-                SELECT
-            </button>
-        </div>
-
-        <!-- Quote Card 5 -->
-        <div class="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-2xl p-5 shadow-md quote-card" data-price="1050" data-distance="3.2">
-            <div class="flex items-start justify-between mb-4">
-                <div class="flex-1">
-                    <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-1">Wellness Pharmacy</h3>
-                    <div class="flex items-center gap-2 mb-2">
-                        <div class="flex items-center gap-1">
-                            <span class="text-yellow-500">⭐</span>
-                            <span class="text-sm font-bold text-gray-900 dark:text-white">4.4</span>
-                            <span class="text-xs text-gray-500 dark:text-gray-400">(72)</span>
-                        </div>
-                    </div>
-                    <div class="flex items-center gap-1 text-sm text-gray-600 dark:text-gray-400">
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
-                        </svg>
-                        <span class="font-medium">3.2 km • Lake Gardens</span>
-                    </div>
-                </div>
-                <div class="text-right">
-                    <p class="text-3xl font-bold text-primary">₹1050</p>
-                    <p class="text-xs text-gray-500 dark:text-gray-400">Total</p>
-                </div>
-            </div>
-            
-            <button onclick="selectQuote('Wellness Pharmacy', 1050)" class="w-full py-3 bg-primary hover:bg-pink-600 text-white font-bold rounded-xl transition-all shadow-md">
-                SELECT
-            </button>
-        </div>
-
+        <span class="text-2xl">🎉</span>
     </div>
 
     <!-- Scripts -->
@@ -285,35 +172,279 @@
             }
         }
 
-        // Simulate real-time quote arrival
-        let quoteCount = 0;
-        const totalQuotes = 5;
+        // Check for selected medicines from session storage
+        let selectedMedicines = [];
+        let orderType = 'prescription'; // 'medicines' or 'prescription'
+        
+        try {
+            const storedMedicines = sessionStorage.getItem('selectedMedicines');
+            if (storedMedicines) {
+                selectedMedicines = JSON.parse(storedMedicines);
+                orderType = 'medicines';
+            }
+        } catch (e) {
+            console.log('No stored medicines found');
+        }
 
-        setTimeout(() => {
-            // Hide loading, show sort and quotes
-            document.getElementById('loadingState').classList.add('hidden');
-            document.getElementById('sortSection').classList.remove('hidden');
-            document.getElementById('quotesList').classList.remove('hidden');
+        function populateOrderSummary() {
+            const orderSummary = document.getElementById('orderSummary');
+            const orderTypeLabel = document.getElementById('orderTypeLabel');
+            const medicinesList = document.getElementById('medicinesList');
+            const itemCountText = document.getElementById('itemCountText');
             
-            // Animate quote cards appearing one by one
-            const cards = document.querySelectorAll('.quote-card');
-            cards.forEach((card, index) => {
-                card.style.opacity = '0';
-                card.style.transform = 'translateY(20px)';
+            if (orderType === 'medicines' && selectedMedicines.length > 0) {
+                orderTypeLabel.textContent = 'Selected Medicines';
                 
-                setTimeout(() => {
-                    card.style.transition = 'all 0.5s ease';
-                    card.style.opacity = '1';
-                    card.style.transform = 'translateY(0)';
+                const totalItems = selectedMedicines.reduce((sum, med) => sum + med.quantity, 0);
+                itemCountText.textContent = `${totalItems} item${totalItems > 1 ? 's' : ''} • ${selectedMedicines.length} medicine${selectedMedicines.length > 1 ? 's' : ''}`;
+                
+                medicinesList.innerHTML = selectedMedicines.map(med => `
+                    <div class="flex items-center justify-between p-2 bg-gray-50 dark:bg-gray-700 rounded-lg">
+                        <div class="flex items-center gap-2">
+                            <span class="${med.isGeneric ? 'text-green-500' : 'text-blue-500'}">💊</span>
+                            <div>
+                                <p class="text-sm font-semibold text-gray-900 dark:text-white">${med.name}</p>
+                                <p class="text-xs text-gray-500 dark:text-gray-400">${med.composition}</p>
+                            </div>
+                        </div>
+                        <div class="text-right">
+                            <span class="text-xs bg-gray-200 dark:bg-gray-600 text-gray-700 dark:text-gray-300 px-2 py-0.5 rounded-full">Qty: ${med.quantity}</span>
+                            ${med.isGeneric ? '<p class="text-xs text-green-600 dark:text-green-400 mt-1">Generic ✓</p>' : ''}
+                        </div>
+                    </div>
+                `).join('');
+            } else {
+                orderTypeLabel.textContent = 'Prescription Upload';
+                itemCountText.textContent = 'Prescription image uploaded';
+                medicinesList.innerHTML = `
+                    <div class="flex items-center gap-3 p-2 bg-gray-50 dark:bg-gray-700 rounded-lg">
+                        <div class="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center">
+                            <svg class="w-6 h-6 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+                            </svg>
+                        </div>
+                        <div>
+                            <p class="text-sm font-semibold text-gray-900 dark:text-white">Prescription Image</p>
+                            <p class="text-xs text-gray-500 dark:text-gray-400">Uploaded successfully</p>
+                        </div>
+                    </div>
+                `;
+            }
+        }
+
+        function toggleOrderDetails() {
+            const details = document.getElementById('orderDetails');
+            const toggleText = document.getElementById('toggleText');
+            
+            if (details.classList.contains('hidden')) {
+                details.classList.remove('hidden');
+                toggleText.textContent = 'Hide Details';
+            } else {
+                details.classList.add('hidden');
+                toggleText.textContent = 'Show Details';
+            }
+        }
+
+        // Quote Data - Simulating real-time arrivals from different pharmacies
+        const pharmacyQuotes = [
+            { name: 'Apollo Pharmacy', price: 945, rating: 4.8, reviews: 200, distance: 0.8, area: 'Park Street', isBest: false, arrivalDelay: 2500, genericAvailable: false, genericSavings: 0 },
+            { name: 'Frank Ross Pharmacy', price: 910, rating: 4.7, reviews: 120, distance: 1.4, area: 'Ballygunge', isBest: true, arrivalDelay: 4000, genericAvailable: true, genericPrice: 685, genericSavings: 225 },
+            { name: 'MedPlus Pharmacy', price: 980, rating: 4.5, reviews: 85, distance: 2.1, area: 'Gariahat', isBest: false, arrivalDelay: 6500, genericAvailable: true, genericPrice: 740, genericSavings: 240 },
+            { name: 'HealthPlus Medical Store', price: 1020, rating: 4.6, reviews: 95, distance: 1.6, area: 'Rashbehari', isBest: false, arrivalDelay: 9000, genericAvailable: false, genericSavings: 0 },
+            { name: 'Wellness Pharmacy', price: 1050, rating: 4.4, reviews: 72, distance: 3.2, area: 'Lake Gardens', isBest: false, arrivalDelay: 12000, genericAvailable: true, genericPrice: 780, genericSavings: 270 },
+        ];
+
+        let quoteCount = 0;
+        let lowestPrice = Infinity;
+        let quotesReceived = [];
+
+        // Show toast notification
+        function showQuoteToast(pharmacy) {
+            const toast = document.getElementById('newQuoteToast');
+            const toastName = document.getElementById('toastPharmacyName');
+            const toastPrice = document.getElementById('toastQuotePrice');
+            
+            toastName.textContent = pharmacy.name;
+            toastPrice.textContent = `₹${pharmacy.price} • ${pharmacy.distance} km away`;
+            
+            // Slide in
+            toast.style.transform = 'translateY(0)';
+            toast.style.opacity = '1';
+            
+            // Vibrate effect (visual pulse)
+            toast.classList.add('animate-bounce');
+            
+            // Play notification sound simulation (screen flash)
+            document.body.style.boxShadow = 'inset 0 0 100px rgba(34, 197, 94, 0.3)';
+            
+            setTimeout(() => {
+                document.body.style.boxShadow = 'none';
+                toast.classList.remove('animate-bounce');
+            }, 500);
+            
+            // Slide out after 2 seconds
+            setTimeout(() => {
+                toast.style.transform = 'translateY(-100%)';
+                toast.style.opacity = '0';
+            }, 2000);
+        }
+
+        // Create quote card HTML
+        function createQuoteCard(pharmacy, isNewBest = false) {
+            const isBestPrice = pharmacy.price <= lowestPrice;
+            
+            return `
+                <div class="bg-white dark:bg-gray-800 ${isBestPrice ? 'border-2 border-green-500 dark:border-green-600' : 'border border-gray-200 dark:border-gray-700'} rounded-2xl p-5 shadow-lg relative quote-card transform translate-x-full opacity-0" 
+                     data-price="${pharmacy.price}" data-distance="${pharmacy.distance}" data-name="${pharmacy.name}" style="transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);">
+                    ${isBestPrice ? `
+                    <div class="absolute -top-3 left-4 bg-green-500 text-white text-xs font-bold px-3 py-1 rounded-full shadow-md animate-pulse">
+                        ${isNewBest ? '🆕 NEW BEST PRICE! 🏆' : 'BEST PRICE 🏆'}
+                    </div>
+                    ` : ''}
+                    ${isNewBest && isBestPrice ? `
+                    <div class="absolute -top-3 right-4 bg-yellow-500 text-white text-xs font-bold px-2 py-1 rounded-full shadow-md">
+                        JUST IN!
+                    </div>
+                    ` : ''}
                     
-                    quoteCount++;
-                    updateQuoteCount();
-                }, index * 600); // Stagger animation
+                    <div class="flex items-start justify-between mb-4 ${isBestPrice ? 'mt-2' : ''}">
+                        <div class="flex-1">
+                            <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-1">${pharmacy.name}</h3>
+                            <div class="flex items-center gap-2 mb-2">
+                                <div class="flex items-center gap-1">
+                                    <span class="text-yellow-500">⭐</span>
+                                    <span class="text-sm font-bold text-gray-900 dark:text-white">${pharmacy.rating}</span>
+                                    <span class="text-xs text-gray-500 dark:text-gray-400">(${pharmacy.reviews})</span>
+                                </div>
+                            </div>
+                            <div class="flex items-center gap-1 text-sm text-gray-600 dark:text-gray-400">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
+                                </svg>
+                                <span class="font-medium">${pharmacy.distance} km • ${pharmacy.area}</span>
+                            </div>
+                        </div>
+                        <div class="text-right">
+                            <p class="text-3xl font-bold ${isBestPrice ? 'text-green-600 dark:text-green-500' : 'text-primary'}">${pharmacy.price}</p>
+                            <p class="text-xs text-gray-500 dark:text-gray-400">Total</p>
+                        </div>
+                    </div>
+                    
+                    <button onclick="selectQuote('${pharmacy.name}', ${pharmacy.price})" class="w-full py-3 ${isBestPrice ? 'bg-green-500 hover:bg-green-600' : 'bg-primary hover:bg-pink-600'} text-white font-bold rounded-xl transition-all flex items-center justify-center gap-2 shadow-md">
+                        ${isBestPrice ? '<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>' : ''}
+                        SELECT
+                    </button>
+                </div>
+            `;
+        }
+
+        // Dynamically add a quote with animation
+        function addQuote(pharmacy) {
+            const container = document.getElementById('quotesList');
+            const isNewBest = pharmacy.price < lowestPrice;
+            
+            // If this is the new best price, update existing best price card
+            if (isNewBest && lowestPrice !== Infinity) {
+                // Remove best badge from old best
+                const existingCards = container.querySelectorAll('.quote-card');
+                existingCards.forEach(card => {
+                    const badge = card.querySelector('.bg-green-500.absolute');
+                    if (badge) {
+                        badge.remove();
+                        card.classList.remove('border-green-500', 'dark:border-green-600', 'border-2');
+                        card.classList.add('border', 'border-gray-200', 'dark:border-gray-700');
+                        // Update button color
+                        const btn = card.querySelector('button');
+                        btn.classList.remove('bg-green-500', 'hover:bg-green-600');
+                        btn.classList.add('bg-primary', 'hover:bg-pink-600');
+                        btn.innerHTML = 'SELECT';
+                        // Update price color
+                        const priceEl = card.querySelector('.text-3xl');
+                        priceEl.classList.remove('text-green-600', 'dark:text-green-500');
+                        priceEl.classList.add('text-primary');
+                    }
+                });
+            }
+            
+            if (pharmacy.price < lowestPrice) {
+                lowestPrice = pharmacy.price;
+            }
+            
+            // Insert new quote card HTML
+            const cardHTML = createQuoteCard(pharmacy, isNewBest && quoteCount > 0);
+            container.insertAdjacentHTML('beforeend', cardHTML);
+            
+            // Get the newly added card and animate it
+            const newCard = container.lastElementChild;
+            
+            // Trigger animation
+            requestAnimationFrame(() => {
+                requestAnimationFrame(() => {
+                    newCard.style.transform = 'translateX(0)';
+                    newCard.style.opacity = '1';
+                });
             });
-        }, 3000); // Show loading for 3 seconds
+            
+            quoteCount++;
+            quotesReceived.push(pharmacy);
+            updateQuoteCount();
+            
+            // Show toast notification
+            showQuoteToast(pharmacy);
+            
+            // Re-sort if sorting is active
+            const sortPriceBtn = document.getElementById('sortPrice');
+            if (sortPriceBtn.classList.contains('bg-primary')) {
+                setTimeout(() => sortByPrice(), 600);
+            }
+        }
+
+        // Start receiving quotes
+        function startQuoteSimulation() {
+            // Show quotes list and order summary immediately
+            document.getElementById('quotesList').classList.remove('hidden');
+            document.getElementById('orderSummary').classList.remove('hidden');
+            populateOrderSummary();
+            
+            // Schedule each quote to arrive at different times
+            pharmacyQuotes.forEach((pharmacy, index) => {
+                setTimeout(() => {
+                    // Update progress bar
+                    const progress = ((index + 1) / pharmacyQuotes.length) * 100;
+                    document.getElementById('progressBar').style.width = progress + '%';
+                    
+                    // Update loading text as quotes come in
+                    if (quoteCount === 0) {
+                        document.getElementById('loadingText').textContent = '🎉 First quote received!';
+                    } else if (quoteCount < pharmacyQuotes.length - 1) {
+                        document.getElementById('loadingText').textContent = `📥 ${quoteCount + 1} quotes received, waiting for more...`;
+                    } else {
+                        document.getElementById('loadingText').textContent = '✅ All quotes received!';
+                        // Hide loading after all quotes
+                        setTimeout(() => {
+                            document.getElementById('loadingState').classList.add('hidden');
+                            document.getElementById('sortSection').classList.remove('hidden');
+                        }, 1000);
+                    }
+                    
+                    addQuote(pharmacy);
+                    
+                    // Show sort section after first quote
+                    if (quoteCount === 1) {
+                        document.getElementById('sortSection').classList.remove('hidden');
+                    }
+                }, pharmacy.arrivalDelay);
+            });
+        }
+
+        // Initialize
+        setTimeout(() => {
+            startQuoteSimulation();
+        }, 1500); // Small initial delay
 
         function updateQuoteCount() {
-            document.getElementById('quoteCount').textContent = `${quoteCount} Quotes`;
+            document.getElementById('quoteCount').textContent = `${quoteCount} Quote${quoteCount > 1 ? 's' : ''}`;
         }
 
         // Sort by Price
@@ -325,7 +456,10 @@
                 return parseFloat(a.dataset.price) - parseFloat(b.dataset.price);
             });
             
-            cards.forEach(card => container.appendChild(card));
+            cards.forEach((card, index) => {
+                card.style.order = index;
+                container.appendChild(card);
+            });
             
             // Update button styles
             document.getElementById('sortPrice').className = 'px-4 py-2 bg-primary text-white text-sm font-bold rounded-full whitespace-nowrap shadow-md flex items-center gap-2';
@@ -350,6 +484,10 @@
 
         // Select Quote
         function selectQuote(pharmacyName, price) {
+            // Store selected pharmacy for confirmation page
+            sessionStorage.setItem('selectedPharmacy', JSON.stringify({ name: pharmacyName, price: price }));
+            // Clear medicines after selection
+            sessionStorage.removeItem('selectedMedicines');
             window.location.href = "{% url 'customer:checkout_order_confirmation' %}";
         }
     </script>

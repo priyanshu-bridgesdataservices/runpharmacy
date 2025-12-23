@@ -16,8 +16,12 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+from django.shortcuts import redirect
 from django.conf import settings
 from django.conf.urls.static import static
+
+def landing_page(request):
+    return redirect('https://runpharmacy.com')
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -26,6 +30,8 @@ urlpatterns = [
         path('customer/', include('customer.urls')),
         path('pharmacy/', include('pharmacy.urls')),
     ])),
+    
+    path('', landing_page, name='landing_page'),
 ]
 
 
